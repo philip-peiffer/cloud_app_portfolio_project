@@ -1,5 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+require('dotenv').config()
+const login = require('./routes/login')
 
 const app = express()
 
@@ -14,4 +16,14 @@ app.use((err, req, res, next) => {
     }
 })
 
+app.use('/', login)
 
+
+
+
+// Start the server
+const PORT = parseInt(process.env.PORT) || 8080;
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
+  console.log('Press Ctrl+C to quit.');
+});

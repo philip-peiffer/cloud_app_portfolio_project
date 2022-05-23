@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styling.css" media="screen" />
+    <title>Portfolio - Phil Peiffer</title>
+</head>
+<body>
+    <h1>Welcome</h1>
+    <hr>
+    <h2>
+        Philip Peiffer's Portfolio Project - CS493
+    </h2>
+    <div>
+        <h3>Instructions:</h3>
+        <p>
+            This app is designed to utilize OAuth2.0 and OpendID to issue an authorization token (to access your google profile info) and a JWT (to identify who is creating/querying datastore data) The app is going to perform the following:
+        </p>
+        <ol> 
+            <li>
+                After you click "Allow Google Access", you will be redirected to log in to your google profile.
+            </li>
+            <li>
+                Once you log in, you have authorized me to access your public information. I will use an authorization token to query the Google People API.
+            </li>
+            <li>
+                I will then query your name information from the Google People API and display a page showing your first name, last name, and the JWT token that was issued as part of the authentication.
+            </li>
+            <li>
+                Copy the JWT. This JWT can be used to create/delete boats from the datastore by calling the API endpoints.
+            </li>
+            <li>
+                Begin by clicking "Allow Google Access" below.
+            </li>
+        </ol>
+    </div>
+    <button id="authorize">Allow Google Access</button>
+    
+</body>
+<script src="homePageClientScript.js"></script>
+</html>

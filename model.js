@@ -1,7 +1,7 @@
 const gcds = require('@google-cloud/datastore')
 
 // grab the datastore instance used for this project
-const projectID = 'portfolio_project'
+const projectID = 'portfolio-peifferp'
 const ds = new gcds.Datastore({projectId: projectID})
 
 // define function to add id to entities returned from DS

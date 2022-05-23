@@ -1,0 +1,17 @@
+body {
+    width: 80%;
+    margin: auto;
+}
+
+hr {
+    width: 30%;
+    margin-left: 0;
+}
+
+#token {
+    overflow-wrap: break-word;
+}
+
+button {
+    margin-top: 10px;
+}

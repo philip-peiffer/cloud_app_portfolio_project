@@ -4,5 +4,5 @@ let buttonEl = document.getElementById('gohome')
 
 // enable going home
 buttonEl.addEventListener('click', () => {
-    location.href = homeLocations[locationIndex]
+    location.href = homeLocations[1]
 })

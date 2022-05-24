@@ -62,7 +62,11 @@ async function getUserInfo (req, res, next) {
         personFields: 'names',
         resourceName: 'people/me'
     })
-    console.log(response.data)
+    
+    // pass the results to the request body
+    req.body.names = response.data.names[0]
+    req.body.token = tokens.id_token
+
     next()
 }
 
@@ -70,16 +74,16 @@ const router = express.Router()
 
 router.use(express.static('public'))
 
-router.get('/', async (req, res) => {
-    // generate and save state value to use during OAuth process
-    STATE = generateState()
-    await model.postItem({state: STATE}, 'states')
-
+router.get('/', (req, res) => {
     // display home page that explains what the app is going to do
     res.sendFile('./home.html', {root: './public'})
 })
 
-router.get('/login', (req, res) => {
+router.get('/login', async (req, res) => {
+     // generate and save state value to use during OAuth process
+     STATE = generateState()
+     await model.postItem({state: STATE}, 'states')
+
     // generate google OAuth2.0 request
     const authUrl = googleOAuthClient.generateAuthUrl({
         scope: SCOPES,
@@ -92,7 +96,7 @@ router.get('/login', (req, res) => {
 
 router.get('/oauth', checkOAuthReject, verifyStateResponse, getUserInfo, (req, res) => {
     // req body now has user info and JWT, so redirect to login success page with that info in the URL
-    res.redirect(`/login_success?first=${req.body.first}&last=${req.body.last}&token=${req.body.token}`)
+    res.redirect(`/login_success?first=${req.body.names.givenName}&last=${req.body.names.familyName}&token=${req.body.token}&id=${req.body.names.metadata.source.id}`)
 })
 
 router.get('/login_success', (req, res) => {

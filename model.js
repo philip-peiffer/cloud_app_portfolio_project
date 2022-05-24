@@ -28,7 +28,14 @@ async function postItem(newData, kind) {
     return newData
 }
 
-async function getItems(kind){
+async function queryKeysOnly (kind) {
+    // this function queries the datastore for entities that match the specified kind, but only returns the keys (not the whole entity)
+    const query = ds.createQuery().select('__key__')
+    const results = await ds.runQuery(query)
+    return results
+}
+
+async function getItemsNoPaginate(kind){
     // returns a list of all entities of a certain kind
     let query = ds.createQuery(kind)
 
@@ -40,6 +47,37 @@ async function getItems(kind){
     data = data.map(fromStore)
 
     return data
+}
+
+async function getItemsPaginate (kind, pageCursor=undefined) {
+    // returns a list of all entities of a certain kind, paginated 
+    // first query only on key to get full count
+    const totalResults = await queryKeysOnly()
+    const total = totalResults.length
+
+    // now run paginated query
+    let query = ds.createQuery(kind).limit(3)
+    if (pageCursor !== undefined){
+        query = query.start(pageCursor)
+    }
+
+    const results = await ds.runQuery(query)
+    const data = results[0]
+    const cursorInfo = results[1]
+    let token = null
+
+    // convert the data to the desired format for return
+    data = data.map(fromStore)
+
+    // set the token value for return if more results can be obtained
+    if (cursorInfo.moreResults !== ds.NO_MORE_RESULTS) {
+        token = cursorInfo.endCursor
+    }
+
+    let returnObj = {next: token, total: total}
+    returnObj[kind] = data
+
+    return returnObj
 }
 
 async function getFilteredItems(kind, filterProp, filterVal) {

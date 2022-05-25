@@ -8,14 +8,16 @@ const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
 let STATE = undefined
 const SCOPES = ['https://www.googleapis.com/auth/userinfo.profile']
-const REDIRECTS = ['http://localhost:8080/oauth']
+const REDIRECTS = process.env.REDIRECTS
 
 // initialize an Oauth2.0 client for google Oauth2.0 calls
 const googleOAuthClient = new google.auth.OAuth2(
     CLIENT_ID,
     CLIENT_SECRET,
-    REDIRECTS[0]   
+    REDIRECTS  
 )
+
+/*--------------- Middleware Functions --------------------- */
 
 // define function to generate state value to prevent cross-site attacks during OAuth
 function generateState() {
@@ -69,6 +71,8 @@ async function getUserInfo (req, res, next) {
 
     next()
 }
+
+/*--------------- LOGIN Routes --------------------- */
 
 const router = express.Router()
 

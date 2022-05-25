@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 require('dotenv').config()
 const login = require('./routes/login')
+const users = requre('./routes/users')
 
 const app = express()
 
@@ -17,7 +18,7 @@ app.use((err, req, res, next) => {
 })
 
 app.use('/', login)
-
+app.use('/users', users)
 
 
 

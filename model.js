@@ -48,7 +48,7 @@ async function postItem(newData, kind) {
 
 async function queryKeysOnly (kind) {
     // this function queries the datastore for entities that match the specified kind, but only returns the keys (not the whole entity)
-    const query = ds.createQuery().select('__key__')
+    const query = ds.createQuery(kind).select('__key__')
     const results = await ds.runQuery(query)
     return results
 }
@@ -119,9 +119,8 @@ async function getItem(kind, id, manualId=false){
     }
 
     const results = await ds.get(manKey)
-    let data = results[0]
 
-    if (data === null || data === undefined) {
+    if (results[0] === null || results[0] === undefined) {
         return results
     }
     
@@ -138,13 +137,19 @@ async function deleteItem(kind, id) {
     return response
 }
 
-async function updateItem(newData, kind) {
+async function updateItem(newData, kind, manualId=false) {
     // updates an item from the datastore that matches the kind
     // NOTE - newData must be a datastore object and include an "id" field
     
     // manually create a key that would match the key we're looking for by creating a new key with the 
     // same kind and ID
-    const manKey = ds.key([kind, parseInt(newData.id, 10)])
+    let manKey = null
+    let existId = newData.id
+    if (manualId) {
+        manKey = ds.key([kind, id])
+    } else {
+        manKey = ds.key([kind, parseInt(id, 10)])
+    }
 
     // prepare the entity object
     delete newData.id
@@ -156,7 +161,7 @@ async function updateItem(newData, kind) {
 
     // update the datastore item and return the key
     await ds.save(newEntity)
-    newData.id = manKey.id
+    newData.id = existId
     return newData
 }
 

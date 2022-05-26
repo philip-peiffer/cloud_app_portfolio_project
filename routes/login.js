@@ -4,7 +4,7 @@ const {google} = require('googleapis')
 const googleOAuthClient = require('./googleAuthClient')
 const model = require('../model')
 
-// define google OAuth values that identify application and scope of authorization
+// define google OAuth values needed for authorization request flow
 let STATE = undefined
 const SCOPES = ['https://www.googleapis.com/auth/userinfo.profile']
 

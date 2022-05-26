@@ -3,6 +3,7 @@ const express = require('express')
 const {google} = require('googleapis')
 const googleOAuthClient = require('./googleAuthClient')
 const model = require('../model')
+const axios = require('axios').default
 
 // define google OAuth values needed for authorization request flow
 let STATE = undefined
@@ -63,6 +64,27 @@ async function getUserInfo (req, res, next) {
     next()
 }
 
+// define function to create a new user IF the user doesn't already exist
+async function createUser (req, res, next) {
+    let userId = req.body.names.metadata.source.id
+    let postUrl = process.env.APP_URL + '/users'
+    let authHeader = 'Bearer ' + req.body.token
+
+    const existUser = await model.getItem('users', userId, true)
+    if (existUser[0] === null || existUser[0] === undefined) {
+        // user does not exist yet, so send a POST request to /users endpoint for creation
+        axios.post(postUrl, {}, {headers: {'accept': '*/*', 'authorization': authHeader}})
+        .then(response => next())
+        .catch(err => {
+            console.error(err)
+            res.redirect('/login_fail')
+        })
+    } else {
+        // user exists, so don't POST a new user and move on to next middleware
+        next()
+    }
+}
+
 /*--------------- LOGIN Routes --------------------- */
 
 const router = express.Router()
@@ -89,9 +111,14 @@ router.get('/login', async (req, res) => {
     res.redirect(authUrl)
 })
 
-router.get('/oauth', checkOAuthReject, verifyStateResponse, getUserInfo, (req, res) => {
+router.get('/oauth', checkOAuthReject, verifyStateResponse, getUserInfo, createUser, (req, res) => {
     // req body now has user info and JWT, so redirect to login success page with that info in the URL
-    res.redirect(`/login_success?first=${req.body.names.givenName}&last=${req.body.names.familyName}&token=${req.body.token}&id=${req.body.names.metadata.source.id}`)
+    const first = req.body.names.given_name
+    const last = req.body.names.familyName
+    const token = req.body.token
+    const userId = req.body.names.metadata.source.id
+    
+    res.redirect(`/login_success?first=${first}&last=${last}}&token=${token}&id=${userId}`)
 })
 
 router.get('/login_success', (req, res) => {

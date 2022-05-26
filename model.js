@@ -10,6 +10,24 @@ function fromStore (data) {
     return data
 }
 
+async function postItemManId(newData, id, kind) {
+    // prepare the key based on kind - this will assign it to the right "table"
+    const newKey = ds.key([kind, id])
+
+    // prepare the entity
+    const entity = {
+        key: newKey,
+        data: newData
+    }
+
+    // save the entity in datastore
+    await ds.save(entity)
+
+    // now add ID field to newData before returning this result so it's in the result sent back to client
+    newData.id = newKey.name
+    return newData
+}
+
 async function postItem(newData, kind) {
     // prepare the key based on kind - this will assign it to the right "table"
     const newKey = ds.key(kind)
@@ -88,12 +106,18 @@ async function getFilteredItems(kind, filterProp, filterVal) {
     return data.map(fromStore)
 }
 
-async function getItem(kind, id){
+async function getItem(kind, id, manualId=false){
     // returns a single item whose id matches the parameter passed in
 
     // manually create a key that would match the key we're looking for by creating a new key with the 
     // same kind and ID
-    const manKey = ds.key([kind, parseInt(id, 10)])
+    let manKey = null
+    if (manualId) {
+        manKey = ds.key([kind, id])
+    } else {
+        manKey = ds.key([kind, parseInt(id, 10)])
+    }
+
     const results = await ds.get(manKey)
     let data = results[0]
 
@@ -138,6 +162,7 @@ async function updateItem(newData, kind) {
 
 module.exports = {
     postItem,
+    postItemManId,
     getItem,
     getFilteredItems,
     getItemsPaginate,

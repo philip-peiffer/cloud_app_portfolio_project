@@ -140,7 +140,8 @@ module.exports = {
     postItem,
     getItem,
     getFilteredItems,
-    getItems,
+    getItemsPaginate,
+    getItemsNoPaginate,
     deleteItem,
     updateItem
 }

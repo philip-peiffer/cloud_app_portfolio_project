@@ -1,19 +1,7 @@
 const express = require('express')
-const {google} = require('googleapis')
 const model = require('../model')
 const messages = require('./errorMessages')
-
-// define google OAuth values that identify application and scope of authorization
-const CLIENT_ID = process.env.CLIENT_ID
-const CLIENT_SECRET = process.env.CLIENT_SECRET
-const REDIRECTS = process.env.REDIRECTS
-
-// initialize an Oauth2.0 client for google Oauth2.0 calls
-const googleOAuthClient = new google.auth.OAuth2(
-    CLIENT_ID,
-    CLIENT_SECRET,
-    REDIRECTS  
-)
+const googleOAuthClient = require('./googleAuthClient')
 
 const router = express.Router()
 
@@ -70,10 +58,6 @@ function verifyRequestBodyKeys (req, res, next) {
     }
 }
 
-function verifyRequestBodyVals (req, res, next) {
-    
-}
-
 function methodNotAllowed (req, res) {
     res.status(405).setHeader('Allow', ["GET", "POST"]).end()
 }
@@ -81,12 +65,13 @@ function methodNotAllowed (req, res) {
 
 /*------------------ USERS ROUTES --------------------------- */
 router.post('/', verifyContentTypeHeader, verifyAcceptHeader, verifyJWT, verifyRequestBodyKeys, (req, res) => {
-    // verify request body values
+    // verify request body values -- assuming they're OK per allowed course instructions
     // post item
+
 
 })
 
-router.get('/', verifyAcceptHeader, (req, res) => {
+router.get('/', verifyAcceptHeader, async (req, res) => {
     // return a list of all users, regardless if JWT was passed
     const response = await model.getItems('users')
     res.status(200).send(response)

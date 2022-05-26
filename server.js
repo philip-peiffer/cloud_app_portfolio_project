@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 require('dotenv').config()
 const login = require('./routes/login')
-const users = requre('./routes/users')
+const users = require('./routes/users')
 
 const app = express()
 

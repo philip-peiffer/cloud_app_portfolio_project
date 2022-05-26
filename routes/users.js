@@ -66,7 +66,7 @@ function verifyRequestBodyKeys (req, res, next) {
     if (valid) {
         next()
     } else {
-        res.status(404).send(messages[404].badKeys)
+        res.status(400).send(messages[400].badKeys)
     }
 }
 

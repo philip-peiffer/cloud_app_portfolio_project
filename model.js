@@ -10,8 +10,17 @@ function fromStore (data) {
     return data
 }
 
+/**
+ * Posts a new entity to datastore that matches the newData object parameter. Returns this new entity with the "id" attribute
+ * added.
+ * NOTE - use this function when wanting to supply ID for datastore manually. If OK with DS assigning an ID instead, use postItem
+ * @param {obj} newData 
+ * @param {str} id 
+ * @param {str} kind 
+ * @returns 
+ */
 async function postItemManId(newData, id, kind) {
-    // prepare the key based on kind - this will assign it to the right "table"
+    // prepare the key based on kind - this will assign it to the right "table" - and manual id
     const newKey = ds.key([kind, id])
 
     // prepare the entity
@@ -20,14 +29,20 @@ async function postItemManId(newData, id, kind) {
         data: newData
     }
 
-    // save the entity in datastore
     await ds.save(entity)
 
-    // now add ID field to newData before returning this result so it's in the result sent back to client
     newData.id = newKey.name
     return newData
 }
 
+/**
+ * Posts a new entity to datastore that matches the newData object parameter. Returns this new entity with the "id" attribute
+ * added.
+ * NOTE - use this function only if OK with datastore creating id automatically. If you need to assign a manual id, use postItemManId
+ * @param {obj} newData 
+ * @param {str} kind 
+ * @returns Entity Object
+ */
 async function postItem(newData, kind) {
     // prepare the key based on kind - this will assign it to the right "table"
     const newKey = ds.key(kind)
@@ -38,26 +53,32 @@ async function postItem(newData, kind) {
         data: newData
     }
 
-    // save the entity in datastore
     await ds.save(entity)
 
-    // now add ID field to newData before returning this result so it's in the result sent back to client
     newData.id = newKey.id
     return newData
 }
 
+/**
+ * Queries the kind group specified, projecting to keys only for faster query. Returns an array of entity keys.
+ * @param {str} kind 
+ * @returns Array of entity keys
+ */
 async function queryKeysOnly (kind) {
     // this function queries the datastore for entities that match the specified kind, but only returns the keys (not the whole entity)
     const query = ds.createQuery(kind).select('__key__')
     const results = await ds.runQuery(query)
-    return results
+    return results[0]
 }
 
+/**
+ * Returns a list of all entities in datastore within the kind group specified. Results are not paginated. If no entities exist, 
+ * returns a blank array.
+ * @param {str} kind 
+ * @returns Array of entities
+ */
 async function getItemsNoPaginate(kind){
-    // returns a list of all entities of a certain kind
     let query = ds.createQuery(kind)
-
-    // run the query and extract the results / cursor information
     const results = await ds.runQuery(query)
     let data = results[0]
 
@@ -67,8 +88,19 @@ async function getItemsNoPaginate(kind){
     return data
 }
 
+/**
+ * Returns a list of all entities within the kind group specified. Results are paginated to 3 items per page.
+ * Returns an object like so:
+ * {
+ *   next: cursor_token,
+ *   total: total items in kind,
+ *   data: entities
+ * }
+ * @param {str} kind 
+ * @param {str} pageCursor 
+ * @returns Query Object
+ */
 async function getItemsPaginate (kind, pageCursor=undefined) {
-    // returns a list of all entities of a certain kind, paginated 
     // first query only on key to get full count
     const totalResults = await queryKeysOnly()
     const total = totalResults.length
@@ -98,19 +130,30 @@ async function getItemsPaginate (kind, pageCursor=undefined) {
     return returnObj
 }
 
+/**
+ * Returns an array of datastore entities whose filterProp = filterVal. If no entities are found, returns an empty array.
+ * @param {str} kind 
+ * @param {str} filterProp 
+ * @param {any} filterVal 
+ * @returns Array of entities
+ */
 async function getFilteredItems(kind, filterProp, filterVal) {
-    // returns a list of all entities of a certain kind that match the filter value
     const query = ds.createQuery(kind).filter(filterProp, '=', filterVal)
     const results = await ds.runQuery(query)
     let data = results[0]
     return data.map(fromStore)
 }
 
+/**
+ * Returns an array with a single entity from datastore whose id matches the id parameter. If no match found, array is empty.
+ * NOTE - manualId = true must be used for entities whose key id's are not automatically created by datastore.
+ * @param {str} kind 
+ * @param {str} id 
+ * @param {bool} manualId 
+ * @returns Array with single entity
+ */
 async function getItem(kind, id, manualId=false){
-    // returns a single item whose id matches the parameter passed in
-
-    // manually create a key that would match the key we're looking for by creating a new key with the 
-    // same kind and ID
+    // manually create matching key
     let manKey = null
     if (manualId) {
         manKey = ds.key([kind, id])
@@ -127,22 +170,31 @@ async function getItem(kind, id, manualId=false){
     return results.map(fromStore)
 }
 
+/**
+ * Deletes an item from the datastore that matches the kind and id passed as parameters.
+ * @param {str} kind 
+ * @param {str} id 
+ * @returns 
+ */
 async function deleteItem(kind, id) {
-    // deletes an item from datastore that matches the kind and id passed in
-    // manually create a key that would match the key we're looking for by creating a new key with the 
-    // same kind and ID
+    // manually create matching key
     const manKey = ds.key([kind, parseInt(id, 10)])
     const response = await ds.delete(manKey)
 
     return response
 }
 
+/**
+ * Updates an item from the "kind" entity group that matches the ID in the newData object. Returns a single object (not array)
+ * NOTE - newData must have an "id" field that contains the id of the datastore entity to be updated.
+ * NOTE - manualId = true must be used for entities that are not assigned keys automatically by datastore.
+ * @param {object} newData 
+ * @param {str} kind 
+ * @param {bool} manualId 
+ * @returns Updated Entity
+ */
 async function updateItem(newData, kind, manualId=false) {
-    // updates an item from the datastore that matches the kind
-    // NOTE - newData must be a datastore object and include an "id" field
-    
-    // manually create a key that would match the key we're looking for by creating a new key with the 
-    // same kind and ID
+    // manually create matching key 
     let manKey = null
     let existId = newData.id
     if (manualId) {

@@ -19,6 +19,17 @@ const rentals = express.Router()
     addObj.self = req.protocol + '://' + req.get('host') + req.basUrl + '/' + req.body.id
 }
 
+function updateUserRentalsArray(userId, rentalId, rentalName) {
+    const existUserArray = await model.getItem('users', userId, true)
+    const existUser = existUserArray[0]
+
+    existUser.rentals.forEach(rental => {
+        if (rental.id === rentalId) {
+            rental.name = rentalName
+        }
+    })
+}
+
 function removeRentalFromUser (userId, rentalId) {
     const existUserArray = await model.getItem('users', userId, true)
     const existUser = existUserArray[0]
@@ -38,7 +49,7 @@ function removeRentalFromGear (gearId) {
     const existGearArray = await model.getItem('gear', gearId)
     const existGear = existGearArray[0]
 
-    existGear.rentals = null
+    existGear.rental = null
     await model.updateItem(existGear, 'gear')
 }
 
@@ -105,13 +116,18 @@ function verifyAcceptHeader (req, res, next) {
  * @param {*} next 
  */
 function verifyRequestBodyKeys (req, res, next) {
-    const requiredKeys = ["start", "end"]
     const allowedObj = {"start": '', "end": '', "name": ''}
-    const request = req.body
+    let requiredKeys;
     let valid = true
 
+    if (req.method === "PUT" || req.method === "POST") {
+        requiredKeys = ["start", "end"]
+    } else {
+        requiredKeys = []
+    }
+    
     // check to make sure no extra attributes beyond what's allowed are added to request body
-    Object.keys(request).forEach(key => {
+    Object.keys(req.body).forEach(key => {
         if (!(key in allowedObj)) {
             valid = false
         }
@@ -120,7 +136,7 @@ function verifyRequestBodyKeys (req, res, next) {
     // if still valid, check to make sure required keys have been passed to request body
     if (valid) {
         requiredKeys.forEach(key => {
-            if (!(key in request)) {
+            if (!(key in req.body)) {
                 valid = false
             }
         })
@@ -171,6 +187,26 @@ async function verifyResourceExists (req, res, next) {
 }
 
 /**
+ * Prepares the request body for being passed into the update function on PUT and PATCH request. The function
+ * loops through the existing representation of the resource and adds the existing id, user, gear (for PUT) and
+ * any non-included attributes for PATCH.
+ * NOTE - request body must contain a key existResource that contains the current representation of the resource 
+ * before update.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function prepareReqBodyPutPatch (req, res, next) {
+    const existResource = req.body.existResource
+    Object.keys(existResource).forEach(key => {
+        if (!(key in req.body)) {
+            req.body[key] = existResource[key]
+        }
+    })
+    next()
+}
+
+/**
  * Middleware to use when a method is not allowed. Sends a 405 status code with the allowed methods set in the header.
  * @param {*} req 
  * @param {*} res 
@@ -206,19 +242,35 @@ rentals.get('/', verifyAcceptHeader, verifyJWT, async (req, res) => {
     res.status(200).send(response)
 })
 
-rentals.put('/:rental_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, verifyResourceExists, verifyUserOwnsResource, async (req, res) => {
-    // add the existing gear and id to the rental
-    const existGear = req.body.existResource.gear
+rentals.put('/:rental_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, verifyResourceExists, verifyUserOwnsResource, prepareReqBodyPutPatch, async (req, res) => {
+    const existResource = req.body.existResource
     delete req.body.existResource
-    req.body.gear = existGear
-    req.body.id = req.params.rental_id
 
+    // update rental and prepare it for sending back
     const response = await model.updateItem(req.body, 'rentals')
     addSelftoResponseObject(req, response)
+
+    // update the user's rental array that is tied to the rental if rental name changed
+    if (response.name !== existResource.name) {
+        updateUserRentalsArray(response.user, response.id, response.name)
+    }
     res.status(303).set('location', response.self).end()
 })
 
-rentals.patch('/:rental_id', methodNotAllowed)
+rentals.patch('/:rental_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, verifyResourceExists, verifyUserOwnsResource, prepareReqBodyPutPatch, async (req, res) => {
+    const existResource = req.body.existResource
+    delete req.body.existResource
+
+    // update rental and prepare it for sending back
+    const response = await model.updateItem(req.body, 'rentals')
+    addSelftoResponseObject(req, response)
+
+    // update the user's rental array that is tied to the rental if rental name changed
+    if (response.name !== existResource.name) {
+        updateUserRentalsArray(response.user, response.id, response.name)
+    }
+    res.status(303).set('location', response.self).end()
+})
 
 rentals.delete('/:rental_id', verifyJWT, verifyResourceExists, verifyUserOwnsResource, async (req, res) => {
     // NOTE - deleting a rental also deletes it out of the user's array and removes tie to gear as well

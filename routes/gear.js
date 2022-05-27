@@ -19,39 +19,7 @@ const gear = express.Router()
     addObj.self = req.protocol + '://' + req.get('host') + req.basUrl + '/' + req.body.id
 }
 
-function updateUserRentalsArray(userId, rentalId, rentalName) {
-    const existUserArray = await model.getItem('users', userId, true)
-    const existUser = existUserArray[0]
 
-    existUser.rentals.forEach(rental => {
-        if (rental.id === rentalId) {
-            rental.name = rentalName
-        }
-    })
-}
-
-function removeRentalFromUser (userId, rentalId) {
-    const existUserArray = await model.getItem('users', userId, true)
-    const existUser = existUserArray[0]
-
-    const newRentals = []
-    existUser.rentals.forEach(rental => {
-        if (rental.id !== rentalId) {
-            newRentals.push(rental)
-        }
-    })
-    existUser.rentals = newRentals
-
-    await model.updateItem(existUser, 'users', true)
-}
-
-function removeRentalFromGear (gearId) {
-    const existGearArray = await model.getItem('gear', gearId)
-    const existGear = existGearArray[0]
-
-    existGear.rental = null
-    await model.updateItem(existGear, 'gear')
-}
 
 /*--------------- Middleware Functions --------------------- */
 
@@ -95,12 +63,12 @@ function verifyAcceptHeader (req, res, next) {
  * @param {*} next 
  */
 function verifyRequestBodyKeys (req, res, next) {
-    const allowedObj = {"start": '', "end": '', "name": ''}
+    const allowedObj = {"available": '', "item description": '', "category": ''}
     let requiredKeys;
     let valid = true
 
     if (req.method === "PUT" || req.method === "POST") {
-        requiredKeys = ["start", "end"]
+        requiredKeys = ['item description', 'category']
     } else {
         requiredKeys = []
     }
@@ -188,19 +156,25 @@ gear.post('/', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKey
     res.status(201).send(createdGear)
 })
 
-gear.get('/', verifyAcceptHeader, verifyJWT, async (req, res) => {
-    // return a list of all rentals tied to the user identified in the JWT
-    const response = await model.getFilteredItems('rentals', 'user', req.body.user)
+gear.get('/', verifyAcceptHeader, async (req, res) => {
+    // return a list of all gear (not protected), paginated to 5 results per page
+    const response = await model.getItemsPaginate('gear', req.query.token)
 
     // loop through response and add self to each response object
-    response.forEach(rental => {
-        addSelftoResponseObject(req, rental)
+    response.data.forEach(gearPiece => {
+        addSelftoResponseObject(req, gearPiece)
     })
+
+    // fix "next" attribute to have correct endpoint
+    let token = response.next
+    const baseUrl = req.protocol + '://' + req.get('host') + '/' + req.baseUrl + '/'
+    response.next = baseUrl + token
+
     res.status(200).send(response)
 })
 
 gear.delete('/', methodNotAllowed)
-gear.put('/', methodNotallowed)
+gear.put('/', methodNotAllowed)
 gear.patch('/', methodNotAllowed)
 
 gear.put('/:rental_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, verifyResourceExists, verifyUserOwnsResource, prepareReqBodyPutPatch, async (req, res) => {

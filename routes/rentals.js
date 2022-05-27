@@ -233,12 +233,18 @@ rentals.post('/', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBody
 
 rentals.get('/', verifyAcceptHeader, verifyJWT, async (req, res) => {
     // return a list of all rentals tied to the user identified in the JWT
-    const response = await model.getFilteredItems('rentals', 'user', req.body.user)
+    const response = await model.getFilteredItemsPaginated('rentals', 'user', req.body.user)
 
     // loop through response and add self to each response object
-    response.forEach(rental => {
+    response.rentals.forEach(rental => {
         addSelftoResponseObject(req, rental)
     })
+
+    // fix "next" attribute to have correct endpoint
+    const token = response.next
+    const baseUrl = req.protocol + '://' + req.get('host') + req.baseUrl + '?token='
+    response.next = baseUrl + token
+    
     res.status(200).send(response)
 })
 

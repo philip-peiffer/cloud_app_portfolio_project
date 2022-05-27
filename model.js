@@ -132,12 +132,46 @@ async function getItemsPaginate (kind, pageCursor=undefined) {
 
 /**
  * Returns an array of datastore entities whose filterProp = filterVal. If no entities are found, returns an empty array.
+ * Returns the entities within an object like so: {next: cursor_token, total: total items that matched, data: entities}.
+ * Results are paginated to 5 results per page.
  * @param {str} kind 
  * @param {str} filterProp 
  * @param {any} filterVal 
  * @returns Array of entities
  */
-async function getFilteredItems(kind, filterProp, filterVal) {
+async function getFilteredItemsPaginated(kind, filterProp, filterVal, pageCursor=undefined) {
+    // first query with just filter to get full count
+    const totalResultsQuery = getFilteredItems(kind, filterprop, filterval)
+    const total = totalResultsQuery.length
+
+    // now run paginated query
+    let query = ds.createQuery(kind).filter(filterProp, '=', filterVal).limit(5)
+    if (pageCursor !== undefined){
+        query = query.start(pageCursor)
+    }
+
+    // convert the data to the desired format for return
+    data = data.map(fromStore)
+
+    // set the token value for return if more results can be obtained
+    if (cursorInfo.moreResults !== ds.NO_MORE_RESULTS) {
+        token = cursorInfo.endCursor
+    }
+
+    let returnObj = {next: token, total: total}
+    returnObj[kind] = data
+
+    return returnObj
+}
+
+/**
+ * Returns an array of datastore entities whose filterProp = filterVal. If no entities are found, returns an empty array.
+ * @param {str} kind 
+ * @param {str} filterProp 
+ * @param {any} filterVal 
+ * @returns Array of entities
+ */
+ async function getFilteredItems(kind, filterProp, filterVal) {
     const query = ds.createQuery(kind).filter(filterProp, '=', filterVal)
     const results = await ds.runQuery(query)
     let data = results[0]

@@ -106,7 +106,7 @@ async function getItemsPaginate (kind, pageCursor=undefined) {
     const total = totalResults.length
 
     // now run paginated query
-    let query = ds.createQuery(kind).limit(3)
+    let query = ds.createQuery(kind).limit(5)
     if (pageCursor !== undefined){
         query = query.start(pageCursor)
     }

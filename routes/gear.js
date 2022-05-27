@@ -16,9 +16,8 @@ const gear = express.Router()
  * @param {*} addObj 
  */
  function addSelftoResponseObject (req, addObj) {
-    addObj.self = req.protocol + '://' + req.get('host') + req.basUrl + '/' + req.body.id
+    addObj.self = req.protocol + '://' + req.get('host') + req.baseUrl + '/' + req.body.id
 }
-
 
 
 /*--------------- Middleware Functions --------------------- */
@@ -178,46 +177,46 @@ gear.delete('/', methodNotAllowed)
 gear.put('/', methodNotAllowed)
 gear.patch('/', methodNotAllowed)
 
-gear.put('/:rental_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, verifyResourceExists, verifyUserOwnsResource, prepareReqBodyPutPatch, async (req, res) => {
-    const existResource = req.body.existResource
-    delete req.body.existResource
+// gear.put('/:rental_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, verifyResourceExists, verifyUserOwnsResource, prepareReqBodyPutPatch, async (req, res) => {
+//     const existResource = req.body.existResource
+//     delete req.body.existResource
 
-    // update rental and prepare it for sending back
-    const response = await model.updateItem(req.body, 'rentals')
-    addSelftoResponseObject(req, response)
+//     // update rental and prepare it for sending back
+//     const response = await model.updateItem(req.body, 'rentals')
+//     addSelftoResponseObject(req, response)
 
-    // update the user's rental array that is tied to the rental if rental name changed
-    if (response.name !== existResource.name) {
-        updateUserRentalsArray(response.user, response.id, response.name)
-    }
-    res.status(303).set('location', response.self).end()
-})
+//     // update the user's rental array that is tied to the rental if rental name changed
+//     if (response.name !== existResource.name) {
+//         updateUserRentalsArray(response.user, response.id, response.name)
+//     }
+//     res.status(303).set('location', response.self).end()
+// })
 
-gear.patch('/:rental_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, verifyResourceExists, verifyUserOwnsResource, prepareReqBodyPutPatch, async (req, res) => {
-    const existResource = req.body.existResource
-    delete req.body.existResource
+// gear.patch('/:rental_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, verifyResourceExists, verifyUserOwnsResource, prepareReqBodyPutPatch, async (req, res) => {
+//     const existResource = req.body.existResource
+//     delete req.body.existResource
 
-    // update rental and prepare it for sending back
-    const response = await model.updateItem(req.body, 'rentals')
-    addSelftoResponseObject(req, response)
+//     // update rental and prepare it for sending back
+//     const response = await model.updateItem(req.body, 'rentals')
+//     addSelftoResponseObject(req, response)
 
-    // update the user's rental array that is tied to the rental if rental name changed
-    if (response.name !== existResource.name) {
-        updateUserRentalsArray(response.user, response.id, response.name)
-    }
-    res.status(303).set('location', response.self).end()
-})
+//     // update the user's rental array that is tied to the rental if rental name changed
+//     if (response.name !== existResource.name) {
+//         updateUserRentalsArray(response.user, response.id, response.name)
+//     }
+//     res.status(303).set('location', response.self).end()
+// })
 
-gear.delete('/:rental_id', verifyJWT, verifyResourceExists, verifyUserOwnsResource, async (req, res) => {
-    // NOTE - deleting a rental also deletes it out of the user's array and removes tie to gear as well
-    req.body.existResource.gear.forEach(piece => {
-        removeRentalFromGear(piece.id)
-    })
+// gear.delete('/:rental_id', verifyJWT, verifyResourceExists, verifyUserOwnsResource, async (req, res) => {
+//     // NOTE - deleting a rental also deletes it out of the user's array and removes tie to gear as well
+//     req.body.existResource.gear.forEach(piece => {
+//         removeRentalFromGear(piece.id)
+//     })
 
-    removeRentalFromUser(req.body.existResource.user, req.params.rental_id)
+//     removeRentalFromUser(req.body.existResource.user, req.params.rental_id)
 
-    await model.deleteItem('rentals', req.params.rental_id)
-    res.status(204).end()
-})
+//     await model.deleteItem('rentals', req.params.rental_id)
+//     res.status(204).end()
+// })
 
 module.exports = gear

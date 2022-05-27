@@ -112,7 +112,7 @@ async function getItemsPaginate (kind, pageCursor=undefined) {
     }
 
     const results = await ds.runQuery(query)
-    const data = results[0]
+    let data = results[0]
     const cursorInfo = results[1]
     let token = null
 

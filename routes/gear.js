@@ -1,5 +1,6 @@
 const express = require('express')
 const model = require('../model')
+const errorMessages = require('./errorMessages')
 const messages = require('./errorMessages')
 const googleOAuthClient = require('./googleAuthClient')
 
@@ -16,7 +17,7 @@ const gear = express.Router()
  * @param {*} addObj 
  */
  function addSelftoResponseObject (req, addObj) {
-    addObj.self = req.protocol + '://' + req.get('host') + req.baseUrl + '/' + req.body.id
+    addObj.self = req.protocol + '://' + req.get('host') + req.baseUrl + '/' + addObj.id
 }
 
 
@@ -104,11 +105,9 @@ function verifyRequestBodyKeys (req, res, next) {
  * @param {*} next 
  */
 async function verifyResourceExists (req, res, next) {
-    const {resourceId} = req.params
-
-    const resource = await model.getItem('rentals', resourceId, false)
+    const resource = await model.getItem('gear', req.params.gear_id, false)
     if (resource[0] === null || resource[0] === undefined) {
-        res.status(404).send(errorMessages[404].rentals)
+        res.status(404).send(errorMessages[404].gear)
     } else {
         req.body.existResource = resource[0]
         next()
@@ -161,13 +160,13 @@ gear.get('/', verifyAcceptHeader, async (req, res) => {
     const response = await model.getItemsPaginate('gear', req.query.token)
 
     // loop through response and add self to each response object
-    response.data.forEach(gearPiece => {
+    response.gear.forEach(gearPiece => {
         addSelftoResponseObject(req, gearPiece)
     })
 
     // fix "next" attribute to have correct endpoint
     const token = response.next
-    const baseUrl = req.protocol + '://' + req.get('host') + '/' + req.baseUrl + '/'
+    const baseUrl = req.protocol + '://' + req.get('host') + req.baseUrl + '?token='
     response.next = baseUrl + token
 
     res.status(200).send(response)
@@ -176,6 +175,13 @@ gear.get('/', verifyAcceptHeader, async (req, res) => {
 gear.delete('/', methodNotAllowed)
 gear.put('/', methodNotAllowed)
 gear.patch('/', methodNotAllowed)
+
+gear.get('/:gear_id', verifyAcceptHeader, verifyResourceExists, async (req, res) => {
+    const resource = req.body.existResource
+    addSelftoResponseObject(req, resource)
+    res.status(200).send(resource)
+
+})
 
 // gear.put('/:rental_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, verifyResourceExists, verifyUserOwnsResource, prepareReqBodyPutPatch, async (req, res) => {
 //     const existResource = req.body.existResource

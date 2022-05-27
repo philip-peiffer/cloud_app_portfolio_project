@@ -16,7 +16,7 @@ const rentals = express.Router()
  * @param {*} addObj 
  */
  function addSelftoResponseObject (req, addObj) {
-    addObj.self = req.protocol + '://' + req.get('host') + req.basUrl + '/' + req.body.id
+    addObj.self = req.protocol + '://' + req.get('host') + req.basUrl + '/' + addObj.id
 }
 
 function updateUserRentalsArray(userId, rentalId, rentalName) {
@@ -240,6 +240,12 @@ rentals.get('/', verifyAcceptHeader, verifyJWT, async (req, res) => {
         addSelftoResponseObject(req, rental)
     })
     res.status(200).send(response)
+})
+
+rentals.get('/:rental_id', verifyAcceptHeader, verifyJWT, verifyResourceExists, verifyUserOwnsResource, async (req, res) => {
+    const resource = req.body.existResource
+    addSelftoResponseObject(req, resource)
+    res.status(200).send(resource)
 })
 
 rentals.put('/:rental_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, verifyResourceExists, verifyUserOwnsResource, prepareReqBodyPutPatch, async (req, res) => {

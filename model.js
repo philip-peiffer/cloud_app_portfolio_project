@@ -102,7 +102,7 @@ async function getItemsNoPaginate(kind){
  */
 async function getItemsPaginate (kind, pageCursor=undefined) {
     // first query only on key to get full count
-    const totalResults = await queryKeysOnly()
+    const totalResults = await queryKeysOnly(kind)
     const total = totalResults.length
 
     // now run paginated query

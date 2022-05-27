@@ -150,6 +150,7 @@ function methodNotAllowed (req, res) {
 gear.post('/', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, async (req, res) => {
     // verify request body values -- assuming they're OK per allowed course instructions
     req.body.rental = null
+    req.body.available = true
     const createdGear = await model.postItem(req.body, 'gear')
     addSelftoResponseObject(req, createdGear)
 
@@ -166,7 +167,7 @@ gear.get('/', verifyAcceptHeader, async (req, res) => {
     })
 
     // fix "next" attribute to have correct endpoint
-    let token = response.next
+    const token = response.next
     const baseUrl = req.protocol + '://' + req.get('host') + '/' + req.baseUrl + '/'
     response.next = baseUrl + token
 

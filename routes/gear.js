@@ -173,12 +173,21 @@ function prepareReqBodyPutPatch (req, res, next) {
 }
 
 /**
- * Middleware to use when a method is not allowed. Sends a 405 status code with the allowed methods set in the header.
+ * Middleware to use when a method is not allowed on top most routes. Sends a 405 status code with the allowed methods set in the header.
  * @param {*} req 
  * @param {*} res 
  */
 function methodNotAllowed (req, res) {
     res.status(405).setHeader('Allow', ["GET", "POST"]).end()
+}
+
+/**
+ * Middleware to use when a method is not allowed on ID specifc routes. Sends a 405 status code with the allowed methods set in the header.
+ * @param {*} req 
+ * @param {*} res 
+ */
+ function methodNotAllowedIdSpecific (req, res) {
+    res.status(405).setHeader('Allow', ["GET", "PUT", "PATCH", "DELETE"]).end()
 }
 
 /*------------------ Gear ROUTES --------------------------- */
@@ -266,5 +275,7 @@ gear.delete('/:gear_id', verifyResourceExists, async (req, res) => {
     await model.deleteItem('gear', req.params.gear_id)
     res.status(204).end()
 })
+
+gear.post('/:gear_id', methodNotAllowedIdSpecific)
 
 module.exports = gear

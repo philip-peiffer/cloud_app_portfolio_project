@@ -157,7 +157,11 @@ gear.post('/', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKey
 
 gear.get('/', verifyAcceptHeader, async (req, res) => {
     // return a list of all gear (not protected), paginated to 5 results per page
-    const response = await model.getItemsPaginate('gear', req.query.token)
+    let cursorToken = req.query.token
+    if (cursorToken !== null && cursorToken !== undefined) {
+        cursorToken = decodeURIComponent(cursorToken)
+    }
+    const response = await model.getItemsPaginate('gear', cursorToken)
 
     // loop through response and add self to each response object
     response.gear.forEach(gearPiece => {
@@ -165,9 +169,12 @@ gear.get('/', verifyAcceptHeader, async (req, res) => {
     })
 
     // fix "next" attribute to have correct endpoint
-    const token = response.next
     const baseUrl = req.protocol + '://' + req.get('host') + req.baseUrl + '?token='
-    response.next = baseUrl + token
+    cursorToken = response.next
+    if (cursorToken !== null) {
+        cursorToken = encodeURIComponent(cursorToken)
+        response.next = baseUrl + cursorToken
+    } 
 
     res.status(200).send(response)
 })

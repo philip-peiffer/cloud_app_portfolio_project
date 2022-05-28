@@ -38,6 +38,27 @@ async function updateRentalsGearArray(rentalId, gearId, gearDescription) {
     })
 }
 
+/**
+ * This function looks up the rental tied to a piece of gear and deletes the gear from the rental's gear array. Use this function
+ * when deleting a piece of gear from datastore only if the gear is tied to a rental.
+ * @param {str} rentalId 
+ * @param {str} gearId 
+ */
+async function removeGearFromRental (rentalId, gearId) {
+    const existRentalArray = await model.getItem('rentals', rentalId)
+    const existRental = existRentalArray[0]
+
+    const newGear = []
+    existRental.gear.forEach(piece => {
+        if (piece.id !== gearId) {
+            newGear.push(piece)
+        }
+    })
+    existRental.gear = newGear
+
+    await model.updateItem(existRental, 'rentals')
+}
+
 /*--------------- Middleware Functions --------------------- */
 
 
@@ -236,16 +257,14 @@ gear.patch('/:gear_id', verifyContentTypeHeader, verifyAcceptHeader, verifyReque
     res.status(303).set('location', response.self).end()
 })
 
-// gear.delete('/:rental_id', verifyJWT, verifyResourceExists, verifyUserOwnsResource, async (req, res) => {
-//     // NOTE - deleting a rental also deletes it out of the user's array and removes tie to gear as well
-//     req.body.existResource.gear.forEach(piece => {
-//         removeRentalFromGear(piece.id)
-//     })
+gear.delete('/:gear_id', verifyResourceExists, async (req, res) => {
+    // NOTE - deleting a piece of gear also deletes it out of the rental's gear array
+    if (req.body.existResource.rental !== null) {
+        removeGearFromRental(req.body.existResource.gear, req.params.gear_id)
+    }
 
-//     removeRentalFromUser(req.body.existResource.user, req.params.rental_id)
-
-//     await model.deleteItem('rentals', req.params.rental_id)
-//     res.status(204).end()
-// })
+    await model.deleteItem('gear', req.params.gear_id)
+    res.status(204).end()
+})
 
 module.exports = gear

@@ -5,12 +5,12 @@ const projectID = 'portfolio-peifferp'
 const ds = new gcds.Datastore({projectId: projectID})
 
 // define function to add id to entities returned from DS
-function fromStore (data, manualId=false) {
-    if (manualId) {
-        data.id = data[ds.KEY].name
-    } else {
-        data.id = data[ds.KEY].id
-    }
+function fromStore (data) {
+    let dataId = data[ds.KEY].id
+    if (dataId === undefined || dataId === null) {
+        dataId = data[ds.KEY].name
+    } 
+    data.id = dataId
     return data
 }
 
@@ -81,13 +81,13 @@ async function queryKeysOnly (kind) {
  * @param {str} kind 
  * @returns Array of entities
  */
-async function getItemsNoPaginate(kind, manualId=false){
+async function getItemsNoPaginate(kind){
     let query = ds.createQuery(kind)
     const results = await ds.runQuery(query)
     let data = results[0]
 
     // convert the data to the desired format for return
-    data = data.map((data) => fromStore(data, manualId))
+    data = data.map(fromStore)
 
     return data
 }
@@ -104,7 +104,7 @@ async function getItemsNoPaginate(kind, manualId=false){
  * @param {str} pageCursor 
  * @returns Query Object
  */
-async function getItemsPaginate (kind, pageCursor=undefined, manualId=false) {
+async function getItemsPaginate (kind, pageCursor=undefined) {
     // first query only on key to get full count
     const totalResults = await queryKeysOnly(kind)
     const total = totalResults.length
@@ -121,7 +121,7 @@ async function getItemsPaginate (kind, pageCursor=undefined, manualId=false) {
     let token = null
 
     // convert the data to the desired format for return
-    data = data.map((data) => fromStore(data, manualId))
+    data = data.map(fromStore)
 
     // set the token value for return if more results can be obtained
     if (cursorInfo.moreResults !== ds.NO_MORE_RESULTS) {
@@ -143,7 +143,7 @@ async function getItemsPaginate (kind, pageCursor=undefined, manualId=false) {
  * @param {any} filterVal 
  * @returns Array of entities
  */
-async function getFilteredItemsPaginated(kind, filterProp, filterVal, pageCursor=undefined, manualId=false) {
+async function getFilteredItemsPaginated(kind, filterProp, filterVal, pageCursor=undefined) {
     // first query with just filter to get full count
     const totalResultsQuery = await getFilteredItems(kind, filterProp, filterVal)
     const total = totalResultsQuery.length
@@ -160,7 +160,7 @@ async function getFilteredItemsPaginated(kind, filterProp, filterVal, pageCursor
     let token = null
 
     // convert the data to the desired format for return
-    data = data.map((data) => fromStore(data, manualId))
+    data = data.map(fromStore)
 
     // set the token value for return if more results can be obtained
     if (cursorInfo.moreResults !== ds.NO_MORE_RESULTS) {
@@ -180,11 +180,11 @@ async function getFilteredItemsPaginated(kind, filterProp, filterVal, pageCursor
  * @param {any} filterVal 
  * @returns Array of entities
  */
- async function getFilteredItems(kind, filterProp, filterVal, manualId=false) {
+ async function getFilteredItems(kind, filterProp, filterVal) {
     const query = ds.createQuery(kind).filter(filterProp, '=', filterVal)
     const results = await ds.runQuery(query)
     let data = results[0]
-    return data.map((data) => fromStore(data, manualId))
+    return data.map(fromStore)
 }
 
 /**
@@ -210,7 +210,7 @@ async function getItem(kind, id, manualId=false){
         return results
     }
     
-    return results.map((result) => fromStore(result, manualId))
+    return results.map(fromStore)
 }
 
 /**

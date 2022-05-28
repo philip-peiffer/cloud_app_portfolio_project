@@ -50,6 +50,7 @@ async function removeRentalFromGear (gearId) {
     const existGear = existGearArray[0]
 
     existGear.rental = null
+    existGear.available = true
     await model.updateItem(existGear, 'gear')
 }
 

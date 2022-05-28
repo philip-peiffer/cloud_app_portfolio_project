@@ -268,7 +268,7 @@ gear.patch('/:gear_id', verifyContentTypeHeader, verifyAcceptHeader, verifyReque
 gear.delete('/:gear_id', verifyResourceExists, async (req, res) => {
     // NOTE - deleting a piece of gear also deletes it out of the rental's gear array
     if (req.body.existResource.rental !== null) {
-        removeGearFromRental(req.body.existResource.gear, req.params.gear_id)
+        removeGearFromRental(req.body.existResource.rental, req.params.gear_id)
     }
 
     await model.deleteItem('gear', req.params.gear_id)

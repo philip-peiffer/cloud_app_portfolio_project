@@ -9,7 +9,7 @@ const router = express.Router()
 
 function newUser (decodedJWT) {
     let date = new Date()
-    const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()]
+    const [month, day, year] = [date.getMonth() + 1, date.getDate(), date.getFullYear()]
 
     const newUser = {
         "First Name": decodedJWT.payload.given_name,

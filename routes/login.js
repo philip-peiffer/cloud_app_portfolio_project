@@ -113,12 +113,12 @@ router.get('/login', async (req, res) => {
 
 router.get('/oauth', checkOAuthReject, verifyStateResponse, getUserInfo, createUser, (req, res) => {
     // req body now has user info and JWT, so redirect to login success page with that info in the URL
-    const first = req.body.names.given_name
+    const first = req.body.names.givenName
     const last = req.body.names.familyName
     const token = req.body.token
     const userId = req.body.names.metadata.source.id
     
-    res.redirect(`/login_success?first=${first}&last=${last}}&token=${token}&id=${userId}`)
+    res.redirect(`/login_success?first=${first}&last=${last}&token=${token}&id=${userId}`)
 })
 
 router.get('/login_success', (req, res) => {

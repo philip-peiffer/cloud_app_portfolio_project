@@ -172,8 +172,7 @@ gear.get('/', verifyAcceptHeader, async (req, res) => {
     const baseUrl = req.protocol + '://' + req.get('host') + req.baseUrl + '?token='
     cursorToken = response.next
     if (cursorToken !== null) {
-        cursorToken = encodeURIComponent(cursorToken)
-        response.next = baseUrl + cursorToken
+        response.next = baseUrl + encodeURIComponent(cursorToken)
     } 
 
     res.status(200).send(response)

@@ -156,7 +156,7 @@ function verifyGearAndRentalRelated (req, res, next) {
     const {existGear, existRental} = req.body
 
     if (existGear.rental !== existRental.id) {
-        res.status(404).send(errorMessages[400].gearRentalNotRelated)
+        res.status(400).send(errorMessages[400].gearRentalNotRelated)
     } else {
         next()
     }

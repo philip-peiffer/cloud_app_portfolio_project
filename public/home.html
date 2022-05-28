@@ -20,23 +20,26 @@
         </p>
         <ol> 
             <li>
-                After you click "Allow Google Access", you will be redirected to log in to your google profile.
+                After you click "Log In with Google", you will be redirected to log in to your google profile.
             </li>
             <li>
                 Once you log in, you have authorized me to access your public information. I will use an authorization token to query the Google People API.
             </li>
             <li>
-                I will then query your name information from the Google People API and display a page showing your first name, last name, and the JWT token that was issued as part of the authentication.
+                I will then query your name information from the Google People API and display a page showing your first name, last name, your unique datastore ID, and the JWT token that was issued as part of the authentication.
             </li>
             <li>
-                Copy the JWT. This JWT can be used to create/delete boats from the datastore by calling the API endpoints.
+                The backend will create a user account for you within datastore if this is your first time logging in.
             </li>
             <li>
-                Begin by clicking "Allow Google Access" below.
+                You can now use the JWT displayed to create rentals and query rentals. The rental/user relationship will be stored within datastore.
+            </li>
+            <li>
+                Begin by clicking "Log In With Google" below.
             </li>
         </ol>
     </div>
-    <button id="authorize">Allow Google Access</button>
+    <button id="authorize">Log In With Google</button>
     
 </body>
 <script src="homePageClientScript.js"></script>

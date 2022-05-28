@@ -5,8 +5,12 @@ const projectID = 'portfolio-peifferp'
 const ds = new gcds.Datastore({projectId: projectID})
 
 // define function to add id to entities returned from DS
-function fromStore (data) {
-    data.id = data[ds.KEY].id
+function fromStore (data, manualId=false) {
+    if (manualId) {
+        data.id = data[ds.KEY].name
+    } else {
+        data.id = data[ds.KEY].id
+    }
     return data
 }
 
@@ -77,13 +81,13 @@ async function queryKeysOnly (kind) {
  * @param {str} kind 
  * @returns Array of entities
  */
-async function getItemsNoPaginate(kind){
+async function getItemsNoPaginate(kind, manualId=false){
     let query = ds.createQuery(kind)
     const results = await ds.runQuery(query)
     let data = results[0]
 
     // convert the data to the desired format for return
-    data = data.map(fromStore)
+    data = data.map((data) => fromStore(data, manualId))
 
     return data
 }
@@ -100,7 +104,7 @@ async function getItemsNoPaginate(kind){
  * @param {str} pageCursor 
  * @returns Query Object
  */
-async function getItemsPaginate (kind, pageCursor=undefined) {
+async function getItemsPaginate (kind, pageCursor=undefined, manualId=false) {
     // first query only on key to get full count
     const totalResults = await queryKeysOnly(kind)
     const total = totalResults.length
@@ -117,7 +121,7 @@ async function getItemsPaginate (kind, pageCursor=undefined) {
     let token = null
 
     // convert the data to the desired format for return
-    data = data.map(fromStore)
+    data = data.map((data) => fromStore(data, manualId))
 
     // set the token value for return if more results can be obtained
     if (cursorInfo.moreResults !== ds.NO_MORE_RESULTS) {
@@ -139,9 +143,9 @@ async function getItemsPaginate (kind, pageCursor=undefined) {
  * @param {any} filterVal 
  * @returns Array of entities
  */
-async function getFilteredItemsPaginated(kind, filterProp, filterVal, pageCursor=undefined) {
+async function getFilteredItemsPaginated(kind, filterProp, filterVal, pageCursor=undefined, manualId=false) {
     // first query with just filter to get full count
-    const totalResultsQuery = getFilteredItems(kind, filterprop, filterval)
+    const totalResultsQuery = await getFilteredItems(kind, filterProp, filterVal)
     const total = totalResultsQuery.length
 
     // now run paginated query
@@ -149,9 +153,14 @@ async function getFilteredItemsPaginated(kind, filterProp, filterVal, pageCursor
     if (pageCursor !== undefined){
         query = query.start(pageCursor)
     }
+    
+    const results = await ds.runQuery(query)
+    let data = results[0]
+    const cursorInfo = results[1]
+    let token = null
 
     // convert the data to the desired format for return
-    data = data.map(fromStore)
+    data = data.map((data) => fromStore(data, manualId))
 
     // set the token value for return if more results can be obtained
     if (cursorInfo.moreResults !== ds.NO_MORE_RESULTS) {
@@ -171,11 +180,11 @@ async function getFilteredItemsPaginated(kind, filterProp, filterVal, pageCursor
  * @param {any} filterVal 
  * @returns Array of entities
  */
- async function getFilteredItems(kind, filterProp, filterVal) {
+ async function getFilteredItems(kind, filterProp, filterVal, manualId=false) {
     const query = ds.createQuery(kind).filter(filterProp, '=', filterVal)
     const results = await ds.runQuery(query)
     let data = results[0]
-    return data.map(fromStore)
+    return data.map((data) => fromStore(data, manualId))
 }
 
 /**
@@ -201,7 +210,7 @@ async function getItem(kind, id, manualId=false){
         return results
     }
     
-    return results.map(fromStore)
+    return results.map((result) => fromStore(result, manualId))
 }
 
 /**
@@ -232,9 +241,9 @@ async function updateItem(newData, kind, manualId=false) {
     let manKey = null
     let existId = newData.id
     if (manualId) {
-        manKey = ds.key([kind, id])
+        manKey = ds.key([kind, newData.id])
     } else {
-        manKey = ds.key([kind, parseInt(id, 10)])
+        manKey = ds.key([kind, parseInt(newData.id, 10)])
     }
 
     // prepare the entity object
@@ -255,6 +264,7 @@ module.exports = {
     postItem,
     postItemManId,
     getItem,
+    getFilteredItemsPaginated,
     getFilteredItems,
     getItemsPaginate,
     getItemsNoPaginate,

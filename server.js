@@ -4,6 +4,7 @@ require('dotenv').config()
 const login = require('./routes/login')
 const users = require('./routes/users')
 const gear = require('./routes/gear')
+const rentals = require('./routes/rentals')
 
 const app = express()
 
@@ -21,6 +22,7 @@ app.use((err, req, res, next) => {
 app.use('/', login)
 app.use('/users', users)
 app.use('/gear', gear)
+app.use('/rentals', rentals)
 
 
 // Start the server

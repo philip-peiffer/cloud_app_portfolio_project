@@ -98,7 +98,7 @@ router.post('/', verifyContentTypeHeader, verifyAcceptHeader, verifyJWT, verifyR
 
 router.get('/', verifyAcceptHeader, async (req, res) => {
     // return a list of all users, regardless if JWT was passed
-    const response = await model.getItemsNoPaginate('users')
+    const response = await model.getItemsNoPaginate('users', true)
     res.status(200).send(response)
 })
 

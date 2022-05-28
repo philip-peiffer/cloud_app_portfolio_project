@@ -1,6 +1,6 @@
 const express = require('express')
 const model = require('../model')
-const messages = require('./errorMessages')
+const errorMessages = require('./errorMessages')
 const googleOAuthClient = require('./googleAuthClient')
 
 const rentals = express.Router()
@@ -16,10 +16,10 @@ const rentals = express.Router()
  * @param {*} addObj 
  */
  function addSelftoResponseObject (req, addObj) {
-    addObj.self = req.protocol + '://' + req.get('host') + req.basUrl + '/' + addObj.id
+    addObj.self = req.protocol + '://' + req.get('host') + req.baseUrl + '/' + addObj.id
 }
 
-function updateUserRentalsArray(userId, rentalId, rentalName) {
+async function updateUserRentalsArray(userId, rentalId, rentalName) {
     const existUserArray = await model.getItem('users', userId, true)
     const existUser = existUserArray[0]
 
@@ -30,7 +30,7 @@ function updateUserRentalsArray(userId, rentalId, rentalName) {
     })
 }
 
-function removeRentalFromUser (userId, rentalId) {
+async function removeRentalFromUser (userId, rentalId) {
     const existUserArray = await model.getItem('users', userId, true)
     const existUser = existUserArray[0]
 
@@ -45,7 +45,7 @@ function removeRentalFromUser (userId, rentalId) {
     await model.updateItem(existUser, 'users', true)
 }
 
-function removeRentalFromGear (gearId) {
+async function removeRentalFromGear (gearId) {
     const existGearArray = await model.getItem('gear', gearId)
     const existGear = existGearArray[0]
 
@@ -73,7 +73,7 @@ async function verifyJWT (req, res, next) {
     }
     catch (err) {
         console.error(err)
-        res.status(401).send(messages[401])
+        res.status(401).send(errorMessages[401])
     }
 }
 
@@ -86,7 +86,7 @@ async function verifyJWT (req, res, next) {
 */
 function verifyContentTypeHeader (req, res, next) {
     if (req.get('content-type') !== 'application/json') {
-        res.status(415).send(messages[415])
+        res.status(415).send(errorMessages[415])
     } else {
         next()
     }
@@ -102,7 +102,7 @@ function verifyContentTypeHeader (req, res, next) {
 function verifyAcceptHeader (req, res, next) {
     const headerVal = req.get('accept')
     if (headerVal !== 'application/json' && headerVal !== '*/*') {
-        res.status(406).send(messages[406])
+        res.status(406).send(errorMessages[406])
     } else {
         next()
     }
@@ -145,7 +145,7 @@ function verifyRequestBodyKeys (req, res, next) {
     if (valid) {
         next()
     } else {
-        res.status(400).send(messages[400].badKeys)
+        res.status(400).send(errorMessages[400].badKeys)
     }
 }
 
@@ -159,7 +159,7 @@ function verifyRequestBodyKeys (req, res, next) {
  */
 async function verifyUserOwnsResource (req, res, next) {
     // existing resource is stored in the body of the request at this point (after verifyResourceExists)
-    if (req.body.existResource !== req.body.user) {
+    if (req.body.existResource.user !== req.body.user) {
         res.status(403).send(errorMessages[403])
     } else {
         next()
@@ -175,7 +175,7 @@ async function verifyUserOwnsResource (req, res, next) {
  * @param {*} next 
  */
 async function verifyResourceExists (req, res, next) {
-    const {resourceId} = req.params
+    const resourceId = req.params.rental_id
 
     const resource = await model.getItem('rentals', resourceId, false)
     if (resource[0] === null || resource[0] === undefined) {
@@ -233,7 +233,13 @@ rentals.post('/', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBody
 
 rentals.get('/', verifyAcceptHeader, verifyJWT, async (req, res) => {
     // return a list of all rentals tied to the user identified in the JWT
-    const response = await model.getFilteredItemsPaginated('rentals', 'user', req.body.user)
+    let cursorToken = req.query.token
+    if (cursorToken === null || cursorToken === undefined) {
+        cursorToken = undefined
+    } else {
+        cursorToken = decodeURIComponent(cursorToken)
+    }
+    const response = await model.getFilteredItemsPaginated('rentals', 'user', req.body.user, cursorToken)
 
     // loop through response and add self to each response object
     response.rentals.forEach(rental => {
@@ -241,11 +247,15 @@ rentals.get('/', verifyAcceptHeader, verifyJWT, async (req, res) => {
     })
 
     // fix "next" attribute to have correct endpoint
-    const token = response.next
     const baseUrl = req.protocol + '://' + req.get('host') + req.baseUrl + '?token='
-    response.next = baseUrl + token
-    
-    res.status(200).send(response)
+    cursorToken = response.next
+    if (cursorToken === null || cursorToken === undefined) {
+        res.status(200).send(response)
+    } else {
+        cursorToken = encodeURIComponent(cursorToken)
+        response.next = baseUrl + cursorToken
+        res.status(200).send(response)
+    }
 })
 
 rentals.get('/:rental_id', verifyAcceptHeader, verifyJWT, verifyResourceExists, verifyUserOwnsResource, async (req, res) => {

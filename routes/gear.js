@@ -20,6 +20,23 @@ const gear = express.Router()
     addObj.self = req.protocol + '://' + req.get('host') + req.baseUrl + '/' + addObj.id
 }
 
+/**
+ * This function looks up the rental tied to a piece of gear and updates the rental array to include a new item description
+ * for that piece of gear. Use this function if the item description changes during PUT or PATCH requests.
+ * @param {str} rentalId 
+ * @param {str} gearId 
+ * @param {str} gearDescription 
+ */
+async function updateRentalsGearArray(rentalId, gearId, gearDescription) {
+    const existRentalArray = await model.getItem('rentals', rentalId)
+    const existRental = existRentalArray[0]
+
+    existRental.gear.forEach(piece => {
+        if (piece.id === gearId) {
+            piece["item description"] = gearDescription
+        }
+    })
+}
 
 /*--------------- Middleware Functions --------------------- */
 
@@ -189,20 +206,20 @@ gear.get('/:gear_id', verifyAcceptHeader, verifyResourceExists, async (req, res)
 
 })
 
-// gear.put('/:rental_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, verifyResourceExists, verifyUserOwnsResource, prepareReqBodyPutPatch, async (req, res) => {
-//     const existResource = req.body.existResource
-//     delete req.body.existResource
+gear.put('/:gear_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyResourceExists, prepareReqBodyPutPatch, async (req, res) => {
+    const existResource = req.body.existResource
+    delete req.body.existResource
 
-//     // update rental and prepare it for sending back
-//     const response = await model.updateItem(req.body, 'rentals')
-//     addSelftoResponseObject(req, response)
+    // update gear and prepare it for sending back
+    const response = await model.updateItem(req.body, 'gear')
+    addSelftoResponseObject(req, response)
 
-//     // update the user's rental array that is tied to the rental if rental name changed
-//     if (response.name !== existResource.name) {
-//         updateUserRentalsArray(response.user, response.id, response.name)
-//     }
-//     res.status(303).set('location', response.self).end()
-// })
+    // update the rental's gear array if gear is tied to a rental and description changed
+    if (response["item description"] !== existResource["item description"] && response.rental !== null) {
+        updateRentalsGearArray(response.rental, response.id, response["item description"])
+    }
+    res.status(303).set('location', response.self).end()
+})
 
 // gear.patch('/:rental_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, verifyResourceExists, verifyUserOwnsResource, prepareReqBodyPutPatch, async (req, res) => {
 //     const existResource = req.body.existResource

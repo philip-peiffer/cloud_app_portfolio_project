@@ -1,6 +1,6 @@
 // error messages below are split out by status code
 const errorMessages = {
-    400: {badKeys: {"Error": "Request object keys are bad. Check the API doc for required keys."}},
+    400: {badKeys: {"Error": "Request object keys are bad. Check the API doc for required keys."}, gearNotFree: {"Error": "This gear is already rented."}, gearRentalNotRelated: {"Error": "The gear is not on this rental"}},
     401: {"Error": "The request requires a JWT but is either not provided or is invalid."},
     403: {"Error": "JWT provided does not match user of this rental"},
     404: {rentals: {"Error": "This rental does not exist."}, gear: {"Error": "This gear does not exist."}},

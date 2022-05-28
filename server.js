@@ -5,6 +5,7 @@ const login = require('./routes/login')
 const users = require('./routes/users')
 const gear = require('./routes/gear')
 const rentals = require('./routes/rentals')
+const gearRentalRelationship = require('./routes/gearRentalRelationships')
 
 const app = express()
 
@@ -23,6 +24,7 @@ app.use('/', login)
 app.use('/users', users)
 app.use('/gear', gear)
 app.use('/rentals', rentals)
+app.use('/rentals', gearRentalRelationship)
 
 
 // Start the server

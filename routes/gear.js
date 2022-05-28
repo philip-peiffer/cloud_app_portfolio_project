@@ -2,7 +2,6 @@ const express = require('express')
 const model = require('../model')
 const errorMessages = require('./errorMessages')
 const messages = require('./errorMessages')
-const googleOAuthClient = require('./googleAuthClient')
 
 const gear = express.Router()
 

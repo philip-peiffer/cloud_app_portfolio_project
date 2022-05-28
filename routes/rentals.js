@@ -234,9 +234,7 @@ rentals.post('/', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBody
 rentals.get('/', verifyAcceptHeader, verifyJWT, async (req, res) => {
     // return a list of all rentals tied to the user identified in the JWT
     let cursorToken = req.query.token
-    if (cursorToken === null || cursorToken === undefined) {
-        cursorToken = undefined
-    } else {
+    if (cursorToken !== null && cursorToken !== undefined) {
         cursorToken = decodeURIComponent(cursorToken)
     }
     const response = await model.getFilteredItemsPaginated('rentals', 'user', req.body.user, cursorToken)
@@ -249,13 +247,11 @@ rentals.get('/', verifyAcceptHeader, verifyJWT, async (req, res) => {
     // fix "next" attribute to have correct endpoint
     const baseUrl = req.protocol + '://' + req.get('host') + req.baseUrl + '?token='
     cursorToken = response.next
-    if (cursorToken === null || cursorToken === undefined) {
-        res.status(200).send(response)
-    } else {
-        cursorToken = encodeURIComponent(cursorToken)
-        response.next = baseUrl + cursorToken
-        res.status(200).send(response)
-    }
+    if (cursorToken !== null) {
+        response.next = baseUrl + encodeURIComponent(cursorToken)
+    } 
+
+    res.status(200).send(response)
 })
 
 rentals.get('/:rental_id', verifyAcceptHeader, verifyJWT, verifyResourceExists, verifyUserOwnsResource, async (req, res) => {

@@ -20,6 +20,13 @@ app.use((err, req, res, next) => {
     }
 })
 
+// log every request coming in to the console
+app.use((req, res, next) => {
+    const reqUrl = req.protocol + '://' + req.get('host') + req.originalUrl
+    console.log(req.method + ': ' + reqUrl)
+    next()
+})
+
 app.use('/', login)
 app.use('/users', users)
 app.use('/gear', gear)

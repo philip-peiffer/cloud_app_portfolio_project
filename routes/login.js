@@ -26,7 +26,7 @@ function generateState() {
 function checkOAuthReject (req, res, next) {
     if (req.query.error) {
         console.error("Error on Oauth Request: ", req.query.error)
-        res.redirect('/login_fail')
+        res.redirect('/login/login_fail')
     } else {
         next()
     }
@@ -38,7 +38,7 @@ async function verifyStateResponse (req, res, next) {
 
     if (result[0] === null || result[0] === undefined) {
         console.error("Error: State value passed back from Google OAuth server does not match that generated")
-        res.redirect('/login_fail')
+        res.redirect('/login/login_fail')
     } else {
         await model.deleteItem('states', result[0].id)
         next()
@@ -77,7 +77,7 @@ async function createUser (req, res, next) {
         .then(response => next())
         .catch(err => {
             console.error(err)
-            res.redirect('/login_fail')
+            res.redirect('/login/login_fail')
         })
     } else {
         // user exists, so don't POST a new user and move on to next middleware
@@ -96,7 +96,7 @@ router.get('/', (req, res) => {
     res.sendFile('./home.html', {root: './public'})
 })
 
-router.get('/login', async (req, res) => {
+router.get('/googlelogin', async (req, res) => {
      // generate and save state value to use during OAuth process
      STATE = generateState()
      await model.postItem({state: STATE}, 'states')
@@ -118,7 +118,7 @@ router.get('/oauth', checkOAuthReject, verifyStateResponse, getUserInfo, createU
     const token = req.body.token
     const userId = req.body.names.metadata.source.id
     
-    res.redirect(`/login_success?first=${first}&last=${last}&token=${token}&id=${userId}`)
+    res.redirect(`/login/login_success?first=${first}&last=${last}&token=${token}&id=${userId}`)
 })
 
 router.get('/login_success', (req, res) => {

@@ -1,8 +1,8 @@
-const homeLocations = ['https://portfolio-peifferp.wl.r.appspot.com/', 'http://localhost:8080/']
+const homeLocations = ['https://portfolio-peifferp.uw.r.appspot.com/login', 'http://localhost:8080/login']
 
 let buttonEl = document.getElementById('gohome')
 
 // enable going home
 buttonEl.addEventListener('click', () => {
-    location.href = homeLocations[1]
+    location.href = '/login'
 })

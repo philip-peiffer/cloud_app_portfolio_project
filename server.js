@@ -27,7 +27,7 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use('/', login)
+app.use('/login', login)
 app.use('/users', users)
 app.use('/gear', gear)
 app.use('/rentals', rentals)

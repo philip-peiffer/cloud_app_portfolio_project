@@ -1,5 +1,4 @@
 /* ---------- login_success page actions --------------- */
-const homeLocations = ['https://portfolio-peifferp.wl.r.appspot.com/', 'http://localhost:8080/']
 
 // place the user information in the html elements
 let firstNameEl = document.getElementById('firstname')
@@ -18,5 +17,6 @@ tokenEl.innerHTML = params.get('token')
 
 // enable going home
 buttonEl.addEventListener('click', () => {
-    location.href = homeLocations[1]
+    let navigate = window.location.protocol + "//" + window.location.hostname + '/login'
+    location.href = navigate
 })

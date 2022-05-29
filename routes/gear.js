@@ -191,6 +191,10 @@ function methodNotAllowed (req, res) {
 
 /*------------------ Gear ROUTES --------------------------- */
 
+gear.delete('/', methodNotAllowed)
+gear.put('/', methodNotAllowed)
+gear.patch('/', methodNotAllowed)
+
 gear.post('/', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, async (req, res) => {
     // verify request body values -- assuming they're OK per allowed course instructions
     req.body.rental = null
@@ -224,9 +228,7 @@ gear.get('/', verifyAcceptHeader, async (req, res) => {
     res.status(200).send(response)
 })
 
-gear.delete('/', methodNotAllowed)
-gear.put('/', methodNotAllowed)
-gear.patch('/', methodNotAllowed)
+gear.post('/:gear_id', methodNotAllowedIdSpecific)
 
 gear.get('/:gear_id', verifyAcceptHeader, verifyResourceExists, async (req, res) => {
     const resource = req.body.existResource
@@ -274,7 +276,5 @@ gear.delete('/:gear_id', verifyResourceExists, async (req, res) => {
     await model.deleteItem('gear', req.params.gear_id)
     res.status(204).end()
 })
-
-gear.post('/:gear_id', methodNotAllowedIdSpecific)
 
 module.exports = gear

@@ -216,7 +216,20 @@ function methodNotAllowed (req, res) {
     res.status(405).setHeader('Allow', ["GET", "POST"]).end()
 }
 
+/**
+ * Middleware to use when a method is not allowed on ID specifc routes. Sends a 405 status code with the allowed methods set in the header.
+ * @param {*} req 
+ * @param {*} res 
+ */
+ function methodNotAllowedIdSpecific (req, res) {
+    res.status(405).setHeader('Allow', ["GET", "PUT", "PATCH", "DELETE"]).end()
+}
+
 /*------------------ Rentals ROUTES --------------------------- */
+
+rentals.delete('/', methodNotAllowed)
+rentals.put('/', methodNotAllowed)
+rentals.patch('/', methodNotAllwed)
 
 rentals.post('/', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, async (req, res) => {
     // verify request body values -- assuming they're OK per allowed course instructions
@@ -254,6 +267,8 @@ rentals.get('/', verifyAcceptHeader, verifyJWT, async (req, res) => {
 
     res.status(200).send(response)
 })
+
+rentals.post('/:rental_id', methodNotAllowedIdSpecific)
 
 rentals.get('/:rental_id', verifyAcceptHeader, verifyJWT, verifyResourceExists, verifyUserOwnsResource, async (req, res) => {
     const resource = req.body.existResource
@@ -302,7 +317,5 @@ rentals.delete('/:rental_id', verifyJWT, verifyResourceExists, verifyUserOwnsRes
     await model.deleteItem('rentals', req.params.rental_id)
     res.status(204).end()
 })
-
-rentals.delete('/', methodNotAllowed)
 
 module.exports = rentals

@@ -229,7 +229,7 @@ function methodNotAllowed (req, res) {
 
 rentals.delete('/', methodNotAllowed)
 rentals.put('/', methodNotAllowed)
-rentals.patch('/', methodNotAllwed)
+rentals.patch('/', methodNotAllowed)
 
 rentals.post('/', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, async (req, res) => {
     // verify request body values -- assuming they're OK per allowed course instructions

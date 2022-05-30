@@ -20,8 +20,9 @@ const rentals = express.Router()
 }
 
 /**
- * This function requires the request object as input in order to extract the proper URL. It also requires the object that is
- * being sent in the response body as input so that it can be modified to add "self" to the objects that it is related to.
+ * This function requires the request object as input in order to extract the proper URL. It also requires the array of related 
+ * items and the "kind" of the entity in the array. The function loops through each related item and adds the URL that identifies 
+ * the path to that specific item.
  * @param {*} req 
  * @param {*} relationArray - an array of items related to the resource. Must be an array of objects with at least {id: NUM}
  * @param {str} - the kind of the entity related

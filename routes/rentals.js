@@ -19,6 +19,19 @@ const rentals = express.Router()
     addObj.self = req.protocol + '://' + req.get('host') + req.baseUrl + '/' + addObj.id
 }
 
+/**
+ * This function requires the request object as input in order to extract the proper URL. It also requires the object that is
+ * being sent in the response body as input so that it can be modified to add "self" to the objects that it is related to.
+ * @param {*} req 
+ * @param {*} relationArray - an array of items related to the resource. Must be an array of objects with at least {id: NUM}
+ * @param {str} - the kind of the entity related
+ */
+ function addSelftoRelatedObject (req, relationArray, kind) {
+     relationArray.forEach(item => {
+         item.self = req.protocol + '://' + req.get('host') + '/' + kind + '/' + item.id
+     })
+}
+
 async function updateUserRentalsArray(userId, rentalId, rentalName) {
     const existUserArray = await model.getItem('users', userId, true)
     const existUser = existUserArray[0]
@@ -256,9 +269,7 @@ rentals.get('/', verifyAcceptHeader, verifyJWT, async (req, res) => {
     // loop through response and add self to each response object
     response.rentals.forEach(rental => {
         addSelftoResponseObject(req, rental)
-        rental.gear.forEach(piece => {
-            piece.self = req.protocol + '://' + req.get('host') + '/gear/' + piece.id
-        })
+        addSelftoRelatedObject(req, rental.gear, 'gear')
     })
 
     // fix "next" attribute to have correct endpoint
@@ -274,9 +285,13 @@ rentals.get('/', verifyAcceptHeader, verifyJWT, async (req, res) => {
 rentals.post('/:rental_id', methodNotAllowedIdSpecific)
 
 rentals.get('/:rental_id', verifyAcceptHeader, verifyJWT, verifyResourceExists, verifyUserOwnsResource, async (req, res) => {
-    const resource = req.body.existResource
-    addSelftoResponseObject(req, resource)
-    res.status(200).send(resource)
+    const rental = req.body.existResource
+    
+    // add self to resource and all the gear associated with that resource
+    addSelftoResponseObject(req, rental)
+    addSelftoRelatedObject(req, rental.gear, 'gear')
+
+    res.status(200).send(rental)
 })
 
 rentals.put('/:rental_id', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBodyKeys, verifyJWT, verifyResourceExists, verifyUserOwnsResource, prepareReqBodyPutPatch, async (req, res) => {

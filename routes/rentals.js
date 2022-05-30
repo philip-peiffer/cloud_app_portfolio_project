@@ -256,6 +256,9 @@ rentals.get('/', verifyAcceptHeader, verifyJWT, async (req, res) => {
     // loop through response and add self to each response object
     response.rentals.forEach(rental => {
         addSelftoResponseObject(req, rental)
+        rental.gear.forEach(piece => {
+            piece.self = req.protocol + '://' + req.get('host') + '/gear/' + piece.id
+        })
     })
 
     // fix "next" attribute to have correct endpoint

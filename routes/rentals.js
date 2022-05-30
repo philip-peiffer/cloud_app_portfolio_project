@@ -239,7 +239,7 @@ rentals.post('/', verifyContentTypeHeader, verifyAcceptHeader, verifyRequestBody
     // add "self" to response and add rental to user
     addSelftoResponseObject(req, createdRental)
     const user = await model.getItem('users', createdRental.user, true)
-    user[0].rentals.push({"id": createdRental.id, "self": createdRental.self, "name": createdRental.name})
+    user[0].rentals.push({"id": createdRental.id, "name": createdRental.name})
     await model.updateItem(user[0], 'users', true)
 
     res.status(201).send(createdRental)

@@ -21,6 +21,19 @@ function newUser (decodedJWT) {
     return newUser
 }
 
+/**
+ * This function requires the request object as input in order to extract the proper URL. It also requires the object that is
+ * being sent in the response body as input so that it can be modified to add "self" to the objects that it is related to.
+ * @param {*} req 
+ * @param {*} relationArray - an array of items related to the resource. Must be an array of objects with at least {id: NUM}
+ * @param {str} - the kind of the entity related
+ */
+ function addSelftoRelatedObject (req, relationArray, kind) {
+    relationArray.forEach(item => {
+        item.self = req.protocol + '://' + req.get('host') + '/' + kind + '/' + item.id
+    })
+}
+
 /*--------------- Middleware Functions --------------------- */
 async function verifyJWT (req, res, next) {
     let token = req.get('authorization')
@@ -98,8 +111,13 @@ router.post('/', verifyContentTypeHeader, verifyAcceptHeader, verifyJWT, verifyR
 
 router.get('/', verifyAcceptHeader, async (req, res) => {
     // return a list of all users, regardless if JWT was passed
-    const response = await model.getItemsNoPaginate('users', true)
-    res.status(200).send(response)
+    const users = await model.getItemsNoPaginate('users', true)
+
+    // add self to rentals array items
+    users.forEach(user => {
+        addSelftoRelatedObject(req, user.rentals, 'rentals')
+    })
+    res.status(200).send(users)
 })
 
 router.put('/', methodNotAllowed)

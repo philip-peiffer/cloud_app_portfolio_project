@@ -1,6 +1,6 @@
 # About
 This repository contains the files I used to create a Google cloud based REST API. The REST API is an MVP version of a rental equipment tracking API. Three types of entities are stored in a cloud based non-relational db (datastore):
-1) Users (customers)
+1) Users (customers) - sign up through an OAuth2.0 process
 2) Rentals (agreements between customers and the store)
 3) Gear (gear available at the store)
 

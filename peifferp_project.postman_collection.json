@@ -1,0 +1,6604 @@
+{
+	"info": {
+		"_postman_id": "528653be-7534-47a5-ae2f-7c7327241979",
+		"name": "Portfolio Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20264914"
+	},
+	"item": [
+		{
+			"name": "User Requests",
+			"item": [
+				{
+					"name": "Get Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Status 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/users",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users - Bad Accept Header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Status 406\", () => {\r",
+									"    pm.response.to.have.status(406)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{app_url}}/users",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rental Requests",
+			"item": [
+				{
+					"name": "User1 PUT on /rentals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 405\", () => {\r",
+									"    pm.response.to.have.status(405)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 DELETE on /rentals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 405\", () => {\r",
+									"    pm.response.to.have.status(405)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 PATCH on /rentals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 405\", () => {\r",
+									"    pm.response.to.have.status(405)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Create Rental1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"pm.environment.set('rental_1_id', resBody.id)\r",
+									"\r",
+									"function checkBodyDefaults() {\r",
+									"    pm.expect(resBody.gear).to.deep.equal([])\r",
+									"    pm.expect(resBody.user).to.equal(pm.environment.get('user_1_id'))\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Body Defaults Correct\", checkBodyDefaults)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/27/2022\",\r\n    \"end\": \"05/31/2022\",\r\n    \"name\": \"Memorial Day Bike Ride\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 POST on /rentals/rental1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 405\", () => {\r",
+									"    pm.response.to.have.status(405)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users - Rental1 assigned to user1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json()\r",
+									"\r",
+									"pm.test(\"User1 Assigned Rental1\", () => {\r",
+									"    res.forEach(user => {\r",
+									"        if (user.id === pm.environment.get('user_1_id')){\r",
+									"            pm.expect(user.rentals.length).to.equal(1)\r",
+									"            pm.expect(user.rentals[0].id).to.equal(pm.environment.get('rental_1_id'))\r",
+									"        }\r",
+									"    })\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/users",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Create Rental2 - no name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"pm.environment.set('rental_2_id', resBody.id)\r",
+									"\r",
+									"function checkBodyDefaults() {\r",
+									"    pm.expect(resBody.gear).to.deep.equal([])\r",
+									"    pm.expect(resBody.user).to.equal(pm.environment.get('user_1_id'))\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Body Defaults Correct\", checkBodyDefaults)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/28/2022\",\r\n    \"end\": \"05/31/2022\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Create Rental4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBodyDefaults() {\r",
+									"    pm.expect(resBody.gear).to.deep.equal([])\r",
+									"    pm.expect(resBody.user).to.equal(pm.environment.get('user_1_id'))\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Body Defaults Correct\", checkBodyDefaults)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/28/2022\",\r\n    \"end\": \"05/32/2022\",\r\n    \"name\": \"rental #4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Create Rental5",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBodyDefaults() {\r",
+									"    pm.expect(resBody.gear).to.deep.equal([])\r",
+									"    pm.expect(resBody.user).to.equal(pm.environment.get('user_1_id'))\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Body Defaults Correct\", checkBodyDefaults)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/28/2022\",\r\n    \"end\": \"05/32/2022\",\r\n    \"name\": \"rental #5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Create Rental6",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBodyDefaults() {\r",
+									"    pm.expect(resBody.gear).to.deep.equal([])\r",
+									"    pm.expect(resBody.user).to.equal(pm.environment.get('user_1_id'))\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Body Defaults Correct\", checkBodyDefaults)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/28/2022\",\r\n    \"end\": \"05/32/2022\",\r\n    \"name\": \"rental #6\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Create Rental7",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBodyDefaults() {\r",
+									"    pm.expect(resBody.gear).to.deep.equal([])\r",
+									"    pm.expect(resBody.user).to.equal(pm.environment.get('user_1_id'))\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Body Defaults Correct\", checkBodyDefaults)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/28/2022\",\r\n    \"end\": \"05/32/2022\",\r\n    \"name\": \"rental #7\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Create Rental - bad body missing attributes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"Request object keys are bad. Check the API doc for required keys.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/28/2022\",\r\n    \"name\": \"this is a bad request!!!!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Create Rental - bad body extra attributes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"Request object keys are bad. Check the API doc for required keys.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/28/2022\",\r\n    \"end\": \"05/30/2022\",\r\n    \"name\": \"this is a bad request #2!!!!\",\r\n    \"id\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Create Rental - bad accept header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"Server will send back JSON data. Accept header indicates you cannot accept this.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 406\", () => {\r",
+									"    pm.response.to.have.status(406)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/28/2022\",\r\n    \"end\": \"05/30/2022\",\r\n    \"name\": \"this is a bad request #2!!!!\",\r\n    \"id\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Create Rental - bad content-type header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"Server can only handle JSON post, put, and patch requests. Please check the request body and content-type header.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 415\", () => {\r",
+									"    pm.response.to.have.status(415)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/28/2022\",\r\n    \"end\": \"05/30/2022\",\r\n    \"name\": \"this is a bad request #2!!!!\",\r\n    \"id\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Create Rental - expired jwt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"The request requires a JWT but is either not provided or is invalid.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_expired}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/28/2022\",\r\n    \"end\": \"05/30/2022\",\r\n    \"name\": \"this is a bad request.. expired jwt\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Create Rental - invalid jwt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"The request requires a JWT but is either not provided or is invalid.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_invalid}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/28/2022\",\r\n    \"end\": \"05/30/2022\",\r\n    \"name\": \"this is a bad request... invalid jwt\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Create Rental - no jwt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"The request requires a JWT but is either not provided or is invalid.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/28/2022\",\r\n    \"end\": \"05/30/2022\",\r\n    \"name\": \"this is a bad request... no jwt\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Create Rental3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"pm.environment.set('rental_3_id', resBody.id)\r",
+									"\r",
+									"function checkBodyDefaults() {\r",
+									"    pm.expect(resBody.gear).to.deep.equal([])\r",
+									"    pm.expect(resBody.user).to.equal(pm.environment.get('user_2_id'))\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Body Defaults Correct\", checkBodyDefaults)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/28/2022\",\r\n    \"end\": \"05/32/2022\",\r\n    \"name\": \"rental #3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Gets All Rentals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.total).to.equal(6)\r",
+									"    pm.expect(resBody.rentals.length).to.equal(5)\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"User1 GET all doesn't contain User2 Rentals\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Gets All Rentals - bad accept",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 406\", () => {\r",
+									"    pm.response.to.have.status(406)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/html",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Rentals No JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/html",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Rentals Invalid JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_invalid}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/html",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{app_url}}/rentals",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Tries to Get Rental1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"JWT provided does not match user of this rental\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 403\", () => {\r",
+									"    pm.response.to.have.status(403)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Rental1 Invalid JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_invalid}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/html",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Rental1 Invalid No JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/html",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Gets Invalid Rental",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/html",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_invalid_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_invalid_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Gets Rental1 - bad accept",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 406\", () => {\r",
+									"    pm.response.to.have.status(406)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/html",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Gets Rental1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/html",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Tries to Edit Rental3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"JWT provided does not match user of this rental\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 403\", () => {\r",
+									"    pm.response.to.have.status(403)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/30/2022\",\r\n    \"end\": \"06/04/2022\",\r\n    \"name\": \"trying to edit rental3!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Gets Rental3 (not changed)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.name).to.equal(\"rental #3\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Rental 3 not changed\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Tries to Patch Rental 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"JWT provided does not match user of this rental\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 403\", () => {\r",
+									"    pm.response.to.have.status(403)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"trying to edit rental3!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Gets Rental3 (not changed)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.name).to.equal(\"rental #3\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Rental 3 not changed\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Edits Rental3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 303\", () => {\r",
+									"    pm.response.to.have.status(303)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/30/2022\",\r\n    \"end\": \"06/04/2022\",\r\n    \"name\": \"trying to edit rental3 with PUT!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Gets Rental3 (changed)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.name).to.equal(\"trying to edit rental3 with PUT!\")\r",
+									"    pm.expect(resBody.start).to.equal(\"05/30/2022\")\r",
+									"    pm.expect(resBody.end).to.equal(\"06/04/2022\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Rental 3 changed\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Edits Rental3 - no name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 303\", () => {\r",
+									"    pm.response.to.have.status(303)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/30/2022\",\r\n    \"end\": \"06/04/2022\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Gets Rental3 (changed) Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.name).to.equal(\"trying to edit rental3 with PUT!\")\r",
+									"    pm.expect(resBody.start).to.equal(\"05/30/2022\")\r",
+									"    pm.expect(resBody.end).to.equal(\"06/04/2022\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Rental 3 changed\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Patches Rental3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 303\", () => {\r",
+									"    pm.response.to.have.status(303)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"trying to edit rental3 with PATCH!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Gets Rental3 (changed) Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.name).to.equal(\"trying to edit rental3 with PATCH!\")\r",
+									"    pm.expect(resBody.start).to.equal(\"05/30/2022\")\r",
+									"    pm.expect(resBody.end).to.equal(\"06/04/2022\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Rental 3 changed\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Patches Rental3 - invalid jwt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_invalid}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"trying to edit rental3 with PATCH!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Patches Rental3 - expired jwt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_expired}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"trying to edit rental3 with PATCH!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Patches Rental3 - no jwt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"trying to edit rental3 with PATCH!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Patches Rental - incorrect attribute",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"hey there\": \"I shouldn't be able to add this!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Patches Rental - try to edit id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"I shouldn't be able to add this!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Patches Rental - try to edit gear",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"gear\": [\"I shouldn't be able to add this!\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Patches Rental - try to edit user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": \"I shouldn't be able to do this!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Patches Rental3 - bad accept header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 406\", () => {\r",
+									"    pm.response.to.have.status(406)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/html",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Edit Rental 3 with bad accept header\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Patches Rental3 - bad accept header Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 415\", () => {\r",
+									"    pm.response.to.have.status(415)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/html",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Edit Rental 3 with bad content-type header\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Gets Rental3 (not changed)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.name).to.equal(\"trying to edit rental3 with PATCH!\")\r",
+									"    pm.expect(resBody.start).to.equal(\"05/30/2022\")\r",
+									"    pm.expect(resBody.end).to.equal(\"06/04/2022\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Rental 3 not changed\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Patches Non-Existent Rental",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"this doesn't exist\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_invalid_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_invalid_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Edits Rental3 - no start",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"end\": \"06/04/2022\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Edits Rental3 - extra attributes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"06/02/2022\",\r\n    \"end\": \"06/04/2022\",\r\n    \"something else\": \"i shouldn't be able to add this\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Edits Rental3 - invalid JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_invalid}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/30/2022\",\r\n    \"end\": \"06/04/2022\",\r\n    \"name\": \"trying to edit rental3 with PUT!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Edits Rental3 - expired JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_expired}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/30/2022\",\r\n    \"end\": \"06/04/2022\",\r\n    \"name\": \"trying to edit rental3 with PUT!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Edits Rental3 - no JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/30/2022\",\r\n    \"end\": \"06/04/2022\",\r\n    \"name\": \"trying to edit rental3 with PUT!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Edits non existent Rental",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Status code 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/30/2022\",\r\n    \"end\": \"06/04/2022\",\r\n    \"name\": \"trying to edit rental3 with PUT!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_invalid_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_invalid_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Edits Rental3 - bad accept",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Status code 406\", () => {\r",
+									"    pm.response.to.have.status(406)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/30/2022\",\r\n    \"end\": \"06/04/2022\",\r\n    \"name\": \"trying to edit rental3 with PUT! Bad accept header\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_invalid_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_invalid_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Edits Rental3 - bad content-type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Status code 415\", () => {\r",
+									"    pm.response.to.have.status(415)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\": \"05/30/2022\",\r\n    \"end\": \"06/04/2022\",\r\n    \"name\": \"trying to edit rental3 with PUT! Bad content-type header\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_invalid_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_invalid_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Gets Rental3 (not changed) Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.name).to.equal(\"trying to edit rental3 with PATCH!\")\r",
+									"    pm.expect(resBody.start).to.equal(\"05/30/2022\")\r",
+									"    pm.expect(resBody.end).to.equal(\"06/04/2022\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Rental 3 not changed\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Tries to Delete Rental3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"JWT provided does not match user of this rental\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 403\", () => {\r",
+									"    pm.response.to.have.status(403)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Tries to Delete Rental3 - expired JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"The request requires a JWT but is either not provided or is invalid.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_expired}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Tries to Delete Rental3 - invalid JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"The request requires a JWT but is either not provided or is invalid.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_invalid}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Tries to Delete Rental3 - no JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"The request requires a JWT but is either not provided or is invalid.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Tries to Delete Non-Existent Rental",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_invalid_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_invalid_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Gets Rental3 (not deleted)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.start).to.not.equal(null)\r",
+									"    pm.expect(resBody.start).to.not.equal(undefined)\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Rental 3 still exists\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Get Non-Existent Rental",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function checkBody() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"This rental does not exist.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Message Correct\", checkBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/4",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gear Requests",
+			"item": [
+				{
+					"name": "DELETE on /gear",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 405\", () => {\r",
+									"    pm.response.to.have.status(405)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH on /gear",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 405\", () => {\r",
+									"    pm.response.to.have.status(405)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT on /gear",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 405\", () => {\r",
+									"    pm.response.to.have.status(405)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Gear1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"pm.environment.set(\"gear_1_id\", resBody.id)\r",
+									"\r",
+									"function testReturnVal() {\r",
+									"    pm.expect(resBody.available).to.equal(true)\r",
+									"    pm.expect(resBody.rental).to.equal(null)\r",
+									"}\r",
+									"\r",
+									"pm.test(\"status code 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"creating gear response body\", testReturnVal)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Tent\",\r\n    \"category\": \"camping\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST on /gear/gear1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 405\", () => {\r",
+									"    pm.response.to.have.status(405)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Gear2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"pm.environment.set(\"gear_2_id\", resBody.id)\r",
+									"\r",
+									"function testReturnVal() {\r",
+									"    pm.expect(resBody.available).to.equal(true)\r",
+									"    pm.expect(resBody.rental).to.equal(null)\r",
+									"}\r",
+									"\r",
+									"pm.test(\"status code 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"creating gear response body\", testReturnVal)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"180 Solomon Skis\",\r\n    \"category\": \"skiing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Gear3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"pm.environment.set('gear_3_id', resBody.id)\r",
+									"\r",
+									"function testReturnVal() {\r",
+									"    pm.expect(resBody.available).to.equal(true)\r",
+									"    pm.expect(resBody.rental).to.equal(null)\r",
+									"}\r",
+									"\r",
+									"pm.test(\"status code 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"creating gear response body\", testReturnVal)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #3\",\r\n    \"category\": \"water sports\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Gear4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function testReturnVal() {\r",
+									"    pm.expect(resBody.available).to.equal(true)\r",
+									"    pm.expect(resBody.rental).to.equal(null)\r",
+									"}\r",
+									"\r",
+									"pm.test(\"status code 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"creating gear response body\", testReturnVal)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #4\",\r\n    \"category\": \"climbing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Gear5",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function testReturnVal() {\r",
+									"    pm.expect(resBody.available).to.equal(true)\r",
+									"    pm.expect(resBody.rental).to.equal(null)\r",
+									"}\r",
+									"\r",
+									"pm.test(\"status code 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"creating gear response body\", testReturnVal)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #5\",\r\n    \"category\": \"biking\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Gear6",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"pm.environment.set('gear_6_id', resBody.id)\r",
+									"\r",
+									"function testReturnVal() {\r",
+									"    pm.expect(resBody.available).to.equal(true)\r",
+									"    pm.expect(resBody.rental).to.equal(null)\r",
+									"}\r",
+									"\r",
+									"pm.test(\"status code 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"creating gear response body\", testReturnVal)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #6\",\r\n    \"category\": \"biking\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear Paginated",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"pm.environment.set('gear_count', resBody.total)\r",
+									"\r",
+									"function testReturnVal() {\r",
+									"    pm.expect(resBody.total).to.equal(6)\r",
+									"    pm.expect(resBody.gear.length).to.equal(5)\r",
+									"    pm.expect(resBody.next).to.not.equal(null)\r",
+									"}\r",
+									"\r",
+									"pm.test(\"status code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"paginated response body\", testReturnVal)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bad Gear - Extra Attributes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function testReturnVal() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"Request object keys are bad. Check the API doc for required keys.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"creating bad gear response body\", testReturnVal)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #6\",\r\n    \"category\": \"biking\",\r\n    \"something not allowed\": \"here i am!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bad Gear - id added",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function testReturnVal() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"Request object keys are bad. Check the API doc for required keys.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"creating bad gear response body\", testReturnVal)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #6\",\r\n    \"category\": \"biking\",\r\n    \"id\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bad Gear - rental added",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function testReturnVal() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"Request object keys are bad. Check the API doc for required keys.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"creating bad gear response body\", testReturnVal)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #6\",\r\n    \"category\": \"biking\",\r\n    \"rental\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bad Gear - available added",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function testReturnVal() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"Request object keys are bad. Check the API doc for required keys.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"creating bad gear response body\", testReturnVal)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #6\",\r\n    \"category\": \"biking\",\r\n    \"available\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bad Gear - bad accept header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function testReturnVal() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"Server will send back JSON data. Accept header indicates you cannot accept this.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"status code 406\", () => {\r",
+									"    pm.response.to.have.status(406)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"creating bad gear response body\", testReturnVal)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #6\",\r\n    \"category\": \"biking\",\r\n    \"rental\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bad Gear - bad content-type header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resBody = pm.response.json()\r",
+									"\r",
+									"function testReturnVal() {\r",
+									"    pm.expect(resBody.Error).to.equal(\"Server can only handle JSON post, put, and patch requests. Please check the request body and content-type header.\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"status code 415\", () => {\r",
+									"    pm.response.to.have.status(415)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"creating bad gear response body\", testReturnVal)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #6\",\r\n    \"category\": \"biking\",\r\n    \"rental\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear Paginated Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Gear Count Unchanged\", () => {\r",
+									"    let oldCount = pm.environment.get('gear_count')\r",
+									"    pm.expect(pm.response.json().total).to.equal(oldCount)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear Paginated - bad accept header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 406\", () => {\r",
+									"    pm.response.to.have.status(406)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/html",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear1 - no Rental",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"No rental assigned\", () => {\r",
+									"    pm.expect(pm.response.json().rental).to.equal(null)\r",
+									"    pm.expect(pm.response.json().available).to.equal(true)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear1 - no Rental Bad Accept Header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 406\", () => {\r",
+									"    pm.response.to.have.status(406)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Non-Existent Gear",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Error Response Correct\", () => {\r",
+									"    pm.expect(pm.response.json().Error).to.equal(\"This gear does not exist.\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_invalid_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_invalid_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Gear1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 303\", () => {\r",
+									"    pm.response.to.have.status(303)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #1 PUT\",\r\n    \"category\": \"biking\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear1 - changed by PUT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"let res = pm.response.json()\r",
+									"pm.test(\"Body is correct\", () => {\r",
+									"    pm.expect(res.rental).to.equal(null)\r",
+									"    pm.expect(res.available).to.equal(true)\r",
+									"    pm.expect(res.category).to.equal(\"biking\")\r",
+									"    pm.expect(res[\"item description\"]).to.equal(\"Gear #1 PUT\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Gear1 - missing category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #1 PUT missing category\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Gear1 - id added",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #1 PUT id added\",\r\n    \"category\": \"biking\",\r\n    \"id\": 123456\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Gear1 - rental added",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #1 PUT rental added\",\r\n    \"category\": \"biking\",\r\n    \"rental\": \"I'm not supposed to be able to add this\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Gear1 - available added",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #1 PUT avail added\",\r\n    \"category\": \"biking\",\r\n    \"available\": \"I'm not supposed to be able to add this\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Gear1 - bad content type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 415\", () => {\r",
+									"    pm.response.to.have.status(415)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #1 PUT bad content-type\",\r\n    \"category\": \"biking\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Gear1 - bad accept header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 406\", () => {\r",
+									"    pm.response.to.have.status(406)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #1 PUT bad accept header\",\r\n    \"category\": \"biking\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear1 - not changed by bad PUTs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"let res = pm.response.json()\r",
+									"pm.test(\"Body is correct\", () => {\r",
+									"    pm.expect(res.rental).to.equal(null)\r",
+									"    pm.expect(res.available).to.equal(true)\r",
+									"    pm.expect(res.category).to.equal(\"biking\")\r",
+									"    pm.expect(res[\"item description\"]).to.equal(\"Gear #1 PUT\")\r",
+									"    pm.expect(res.id).to.equal(pm.environment.get('gear_1_id'))\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Non Existent Gear",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #1 PATCH\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_invalid_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_invalid_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Gear1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 303\", () => {\r",
+									"    pm.response.to.have.status(303)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #1 PATCH\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear1 - changed by PATCH",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"let res = pm.response.json()\r",
+									"pm.test(\"Body is correct\", () => {\r",
+									"    pm.expect(res.rental).to.equal(null)\r",
+									"    pm.expect(res.available).to.equal(true)\r",
+									"    pm.expect(res.category).to.equal(\"biking\")\r",
+									"    pm.expect(res[\"item description\"]).to.equal(\"Gear #1 PATCH\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Gear1 - id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 123456\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Gear1 - rental",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rental\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Gear1 - available",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"available\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Gear1 - bad content type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 415\", () => {\r",
+									"    pm.response.to.have.status(415)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #1 PATCH bad content-type\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Gear1 - bad accept header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 406\", () => {\r",
+									"    pm.response.to.have.status(406)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item description\": \"Gear #1 PATCH bad accept header\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear1 - not changed by bad PATCH",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"let res = pm.response.json()\r",
+									"pm.test(\"Body is correct\", () => {\r",
+									"    pm.expect(res.rental).to.equal(null)\r",
+									"    pm.expect(res.available).to.equal(true)\r",
+									"    pm.expect(res.category).to.equal(\"biking\")\r",
+									"    pm.expect(res[\"item description\"]).to.equal(\"Gear #1 PATCH\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Gear6 - no relationships",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 204\", () => {\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_6_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_6_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Gear6 - no longer exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_6_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_6_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear Paginated Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Gear Count Decreased by 1\", () => {\r",
+									"    let oldCount = pm.environment.get('gear_count')\r",
+									"    pm.expect(pm.response.json().total).to.equal(oldCount - 1)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Pagination next shows null\", () => {\r",
+									"    pm.expect(pm.response.json().next).to.equal(null)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Relationship Requests",
+			"item": [
+				{
+					"name": "POST on /rentals/rental_id/gear/gear_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 405\", () => {\r",
+									"    pm.response.to.have.status(405)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH on /rentals/rental_id/gear/gear_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 405\", () => {\r",
+									"    pm.response.to.have.status(405)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET on /rentals/rental_id/gear/gear_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code 405\", () => {\r",
+									"    pm.response.to.have.status(405)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Gear1 to Rental1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 204\", () => {\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear1 - rental assigned",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"let res = pm.response.json()\r",
+									"pm.test(\"Body is correct\", () => {\r",
+									"    pm.expect(res.rental).to.equal(pm.environment.get('rental_1_id'))\r",
+									"    pm.expect(res.available).to.equal(false)\r",
+									"    pm.expect(res.category).to.equal(\"biking\")\r",
+									"    pm.expect(res[\"item description\"]).to.equal(\"Gear #1 PATCH\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Gets Rental1 - gear assigned",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json()\r",
+									"\r",
+									"function testBody() {\r",
+									"    pm.expect(res.gear.length).to.equal(1)\r",
+									"    pm.expect(res.gear[0].id).to.equal(pm.environment.get('gear_1_id'))\r",
+									"    pm.expect(res.gear[0][\"item description\"]).to.equal(\"Gear #1 PATCH\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Gear Assigned\", testBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Gear2 to Rental1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 204\", () => {\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Gets Rental1 - gear assigned",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json()\r",
+									"\r",
+									"function testBody() {\r",
+									"    pm.expect(res.gear.length).to.equal(2)\r",
+									"    pm.expect(res.gear[0].id).to.equal(pm.environment.get('gear_1_id'))\r",
+									"    pm.expect(res.gear[0][\"item description\"]).to.equal(\"Gear #1 PATCH\")\r",
+									"    pm.expect(res.gear[1].id).to.equal(pm.environment.get('gear_2_id'))\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Gear Assigned\", testBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Gear2 from Rental1 - don't delete items in datastore",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 204\", () => {\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear2 - rental removed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"let res = pm.response.json()\r",
+									"pm.test(\"Body is correct\", () => {\r",
+									"    pm.expect(res.rental).to.equal(null)\r",
+									"    pm.expect(res.available).to.equal(true)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Gets Rental1 - gear removed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json()\r",
+									"\r",
+									"function testBody() {\r",
+									"    pm.expect(res.gear.length).to.equal(1)\r",
+									"    pm.expect(res.gear[0].id).to.equal(pm.environment.get('gear_1_id'))\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Body Gear Removed from Rental\", testBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Gear2 to Rental2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 204\", () => {\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_2_id}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_2_id}}",
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Gear2 from Rental1 - not related",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Non-Existent Gear from Rental1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_invalid_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_invalid_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Gear from Non-Existent Rental",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_invalid_id}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_invalid_id}}",
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Gear2 to Rental1 - already taken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Gear2 from Rental2 - don't delete items in datastore",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 204\", () => {\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_2_id}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_2_id}}",
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Non-Existent Gear to Rental1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_invalid_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_invalid_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Tries to Assign Gear2 to Rental1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 403\", () => {\r",
+									"    pm.response.to.have.status(403)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear2 - rental not assigned",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"let res = pm.response.json()\r",
+									"pm.test(\"Body is correct\", () => {\r",
+									"    pm.expect(res.rental).to.equal(null)\r",
+									"    pm.expect(res.available).to.equal(true)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Gets Rental1 - gear not assigned",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json()\r",
+									"\r",
+									"function testBody() {\r",
+									"    pm.expect(res.gear.length).to.equal(1)\r",
+									"    pm.expect(res.gear[0].id).to.equal(pm.environment.get('gear_1_id'))\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Gear Not Assigned to Rental\", testBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Gear2 to Non-Existent Rental",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_invalid_id}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_invalid_id}}",
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear2 - rental not assigned Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"let res = pm.response.json()\r",
+									"pm.test(\"Body is correct\", () => {\r",
+									"    pm.expect(res.rental).to.equal(null)\r",
+									"    pm.expect(res.available).to.equal(true)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Gear2 to Rental1 - bad JWT invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_invalid}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Gear2 to Rental1 - bad JWT expired",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_expired}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Gear2 to Rental1 - bad JWT non given",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear2 - rental not assigned Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"let res = pm.response.json()\r",
+									"pm.test(\"Body is correct\", () => {\r",
+									"    pm.expect(res.rental).to.equal(null)\r",
+									"    pm.expect(res.available).to.equal(true)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Gets Rental1 - gear not added",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json()\r",
+									"\r",
+									"function testBody() {\r",
+									"    pm.expect(res.gear.length).to.equal(1)\r",
+									"    pm.expect(res.gear[0].id).to.equal(pm.environment.get('gear_1_id'))\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Gear2 not added to Rental\", testBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Tries Delete Gear1 from Rental1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 403\", () => {\r",
+									"    pm.response.to.have.status(403)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear1 - rental assigned Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"let res = pm.response.json()\r",
+									"pm.test(\"Body is correct\", () => {\r",
+									"    pm.expect(res.rental).to.equal(pm.environment.get('rental_1_id'))\r",
+									"    pm.expect(res.available).to.equal(false)\r",
+									"    pm.expect(res.category).to.equal(\"biking\")\r",
+									"    pm.expect(res[\"item description\"]).to.equal(\"Gear #1 PATCH\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Gets Rental1 - gear assigned Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json()\r",
+									"\r",
+									"function testBody() {\r",
+									"    pm.expect(res.gear.length).to.equal(1)\r",
+									"    pm.expect(res.gear[0].id).to.equal(pm.environment.get('gear_1_id'))\r",
+									"    pm.expect(res.gear[0][\"item description\"]).to.equal(\"Gear #1 PATCH\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Gear Assigned\", testBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Gear2 to Rental1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 204\", () => {\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Gear3 to Rental1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 204\", () => {\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Tries Delete Gear2 from Rental1 - bad JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_expired}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}",
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Gets Rental1 - gear assigned Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json()\r",
+									"\r",
+									"function testBody() {\r",
+									"    pm.expect(res.gear.length).to.equal(3)\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Gear Assigned\", testBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Deleting Resources in Relationship",
+			"item": [
+				{
+					"name": "Delete Gear1 - currently in rental1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"204 Status\", () => {\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User1 Gets Rental1 - gear removed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json()\r",
+									"\r",
+									"function testBody() {\r",
+									"    pm.expect(res.gear.length).to.equal(2)\r",
+									"\r",
+									"    let gearLeft = res.gear\r",
+									"    gearLeft.forEach(piece => {\r",
+									"        pm.expect(piece.id !== pm.environment.get('rental_1_id'))\r",
+									"    })\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Gear Removed\", testBody)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Rental1 - currently has gear2 and gear3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"204 Status\", () => {\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/rentals/{{rental_1_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"rentals",
+								"{{rental_1_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear2 - Rental Removed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Rental Removed from Gear2\", () => {\r",
+									"    pm.expect(res.available).to.equal(true)\r",
+									"    pm.expect(res.rental).to.equal(null)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_2_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Gear3 - Rental Removed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Rental Removed from Gear3\", () => {\r",
+									"    pm.expect(res.available).to.equal(true)\r",
+									"    pm.expect(res.rental).to.equal(null)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/gear/{{gear_3_id}}",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"gear",
+								"{{gear_3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rental1 Removed from User1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Rental1 Removed from User1\", () => {\r",
+									"    res.forEach(user => {\r",
+									"        if (user.id === pm.environment.get('user_1_id')){\r",
+									"            user.rentals.forEach(rental => {\r",
+									"                pm.expect(rental.id).to.not.equal(pm.environment.get('rental_1_id'))\r",
+									"            })\r",
+									"        }\r",
+									"    })\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app_url}}/users",
+							"host": [
+								"{{app_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_1}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

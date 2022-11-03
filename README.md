@@ -4,10 +4,10 @@ This repository contains the files I used to create a Google cloud based REST AP
 2) Rentals (agreements between customers and the store)
 3) Gear (gear available at the store)
 
-Relationships exist among the different entities. These relationships, as well as the methods allowed within the API, are explained in the peiffer_project.pdf file, which is located in the project_details.zip file. The store and customers would use the API to make reservations and track gear. 
+Relationships exist among the different entities. These relationships, as well as the methods allowed within the API, are explained in the peiffer_project_details.pdf file. The store and customers would use the API to make reservations and track gear. 
 
 ## Testing
-Tests for the various API endpoints were created in Postman. The tests have been exported as a Postman collection and are located in the project_details.zip file. This file can be uploaded to Postman for easier viewing. 
+Tests for the various API endpoints were created in Postman. The tests have been exported as a Postman collection and can be viewed in the peifferp_project.postman files. These files can be uploaded to Postman for easier viewing. 
 
 ### Running Postman Test Collection
 ### THIS IS NO LONGER POSSIBLE - THE PROJECT HAS BEEN REMOVED FROM GCLOUD
